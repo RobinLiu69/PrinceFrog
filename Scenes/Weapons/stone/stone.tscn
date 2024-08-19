@@ -168,6 +168,7 @@ position = Vector2(1, 1)
 scale = Vector2(0.6, 0.6)
 
 [node name="StoneHit" type="Area2D" parent="."]
+collision_layer = 2
 
 [node name="HitBox" type="CollisionShape2D" parent="StoneHit"]
 position = Vector2(1, 1)

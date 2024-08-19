@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ceo8lbrpyhh8n"]
+[gd_scene load_steps=14 format=3 uid="uid://ceo8lbrpyhh8n"]
 
 [ext_resource type="Texture2D" uid="uid://dfy2vu21nxxex" path="res://Image/Enemy/Mouse/mouse_attack.png" id="1_g6ri5"]
 [ext_resource type="Script" path="res://Scripts/Enemy/mouse.gd" id="1_jpacp"]
@@ -52,6 +52,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DetectionArea/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_uewcu"]
 resource_name = "walk"
@@ -69,9 +81,26 @@ tracks/0/keys = {
 "values": [0, 1, 2]
 }
 
+[sub_resource type="Animation" id="Animation_qw1i7"]
+resource_name = "stun"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DetectionArea/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ciap4"]
 _data = {
 "RESET": SubResource("Animation_w4j1u"),
+"stun": SubResource("Animation_qw1i7"),
 "walk": SubResource("Animation_uewcu")
 }
 

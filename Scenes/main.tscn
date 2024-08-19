@@ -12,7 +12,7 @@ position = Vector2(260, 447)
 position = Vector2(805, -250)
 
 [node name="Mouse2" parent="." instance=ExtResource("2_weea0")]
-position = Vector2(1920, 553)
+position = Vector2(1317, -355)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1106, 406)

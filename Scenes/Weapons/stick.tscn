@@ -173,7 +173,10 @@ _data = {
 }
 
 [node name="Stick" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_38mqu")
+
+[node name="Timer" type="Timer" parent="."]
 
 [node name="Stick" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ico4n")
@@ -186,10 +189,11 @@ shape = SubResource("RectangleShape2D_eo056")
 disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../Stick")
 reset_on_save = false
+root_node = NodePath("../Stick")
 libraries = {
 "": SubResource("AnimationLibrary_jvlxk")
 }
 
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="StickHit" to="." method="_on_stick_hit_body_entered"]

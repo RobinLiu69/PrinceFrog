@@ -3,9 +3,11 @@ extends CharacterBody2D
 signal health_changed
 
 @export var speed: int = 100.0
+@export var max_health: int = 100
+@export var size: float = 100.0
 @onready var weapons: Array[Node] = ($Weapons).get_children()
 @onready var player: AnimatedSprite2D = $Frog
-@export var max_health: int = 100
+@onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var current_health: int = max_health
 
 
@@ -51,7 +53,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("e"):
 		for weapon in weapons:
 			if weapon.has_method("attack"):
-				weapon.attack()
+				weapon.attack(self)
 			
 
 

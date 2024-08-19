@@ -1,0 +1,111 @@
+[gd_scene load_steps=13 format=3 uid="uid://ceo8lbrpyhh8n"]
+
+[ext_resource type="Texture2D" uid="uid://dfy2vu21nxxex" path="res://Image/Enemy/Mouse/mouse_attack.png" id="1_g6ri5"]
+[ext_resource type="Script" path="res://Scripts/Enemy/mouse.gd" id="1_jpacp"]
+[ext_resource type="Texture2D" uid="uid://dnk1n83p67aji" path="res://Image/Enemy/Mouse/mouse_1.png" id="2_aly1d"]
+[ext_resource type="Texture2D" uid="uid://d0oofvkd3p8yl" path="res://Image/Enemy/Mouse/mouse_2.png" id="3_tjw2s"]
+[ext_resource type="Texture2D" uid="uid://cjeo5rbb0ff27" path="res://Image/Enemy/Mouse/mouse_3.png" id="4_t62ya"]
+[ext_resource type="PackedScene" uid="uid://b1wuee0m4u3o0" path="res://Scenes/GUI/health_bar.tscn" id="6_myu8n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5alhg"]
+radius = 227.024
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ktfjp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_g6ri5")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_aly1d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tjw2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_t62ya")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_82twd"]
+size = Vector2(16.6667, 20)
+
+[sub_resource type="Animation" id="Animation_w4j1u"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mouse:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_uewcu"]
+resource_name = "walk"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mouse:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ciap4"]
+_data = {
+"RESET": SubResource("Animation_w4j1u"),
+"walk": SubResource("Animation_uewcu")
+}
+
+[node name="Mouse" type="CharacterBody2D" groups=["enemy"]]
+scale = Vector2(4, 4)
+script = ExtResource("1_jpacp")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_5alhg")
+
+[node name="Mouse" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ktfjp")
+animation = &"walk"
+
+[node name="Weapons" type="Node2D" parent="."]
+
+[node name="CharacterCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_82twd")
+
+[node name="HealthBar" parent="." node_paths=PackedStringArray("player") instance=ExtResource("6_myu8n")]
+offset_left = -19.0
+offset_top = -23.0
+offset_right = 19.0
+offset_bottom = -17.0
+grow_horizontal = 1
+grow_vertical = 1
+player = NodePath("..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ciap4")
+}
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

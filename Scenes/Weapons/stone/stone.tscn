@@ -1,0 +1,184 @@
+[gd_scene load_steps=11 format=3 uid="uid://ix7t28miveyb"]
+
+[ext_resource type="Script" path="res://Scripts/Weapons/stone/stone.gd" id="1_xrfa4"]
+[ext_resource type="Texture2D" uid="uid://npp325wg6mi8" path="res://Image/Weapons/Stone/stone.png" id="2_7sl4f"]
+[ext_resource type="Texture2D" uid="uid://d1qr7bqw3wkdy" path="res://Image/Weapons/Stone/gravel_1.png" id="2_ox3qc"]
+[ext_resource type="Texture2D" uid="uid://chbkeokdtelq3" path="res://Image/Weapons/Stone/gravel_2.png" id="3_uaa68"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_70oyg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ox3qc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_uaa68")
+}],
+"loop": true,
+"name": &"break",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7sl4f")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kjycp"]
+radius = 6.08276
+
+[sub_resource type="Animation" id="Animation_d1lrp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitBox:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Stone:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Stone:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_8cptv"]
+resource_name = "attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitBox:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Stone:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default"]
+}
+
+[sub_resource type="Animation" id="Animation_rbq1a"]
+resource_name = "break"
+length = 0.4
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Stone:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"break"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Stone:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c0j5j"]
+_data = {
+"RESET": SubResource("Animation_d1lrp"),
+"attack": SubResource("Animation_8cptv"),
+"break": SubResource("Animation_rbq1a")
+}
+
+[node name="Stone" type="CharacterBody2D"]
+scale = Vector2(4, 4)
+script = ExtResource("1_xrfa4")
+
+[node name="Stone" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_70oyg")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+position = Vector2(1, 1)
+scale = Vector2(0.6, 0.6)
+
+[node name="StoneHit" type="Area2D" parent="."]
+
+[node name="HitBox" type="CollisionShape2D" parent="StoneHit"]
+position = Vector2(1, 1)
+shape = SubResource("CircleShape2D_kjycp")
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../StoneHit")
+libraries = {
+"": SubResource("AnimationLibrary_c0j5j")
+}
+
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]
+[connection signal="body_entered" from="StoneHit" to="." method="_on_stone_body_entered"]

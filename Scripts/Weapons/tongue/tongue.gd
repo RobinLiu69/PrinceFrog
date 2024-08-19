@@ -10,7 +10,7 @@ extends CharacterBody2D
 @onready var tongue_mid: Line2D = $TongueMid
 
 var target_hit: bool = false
-
+var pulled: bool = false
 
 
 func _ready():
@@ -36,7 +36,7 @@ func movement(delta: float) -> bool:
 	elif target_hit:
 		look_at(from.position)
 		rotate(PI)
-		pull_target()
+		if not pulled: pull_target()
 		velocity = global_position.direction_to(from.global_position) * speed * 2.5
 		return true
 		
@@ -55,6 +55,8 @@ func pull_target() -> bool:
 		if from.global_position.distance_squared_to(target.global_position) > (from.size * radius) ** 2:
 			target.global_position = global_position
 			return true
+		else:
+			pulled = true
 	return false	
 
 func _on_tongue_hit_body_entered(body: Node2D) -> void:

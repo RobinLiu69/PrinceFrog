@@ -6,13 +6,13 @@
 [node name="root" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_6r5en")]
-position = Vector2(260, 447)
+position = Vector2(256, 591)
 
 [node name="Mouse" parent="." instance=ExtResource("2_weea0")]
-position = Vector2(805, -250)
+position = Vector2(1072, -157)
 
 [node name="Mouse2" parent="." instance=ExtResource("2_weea0")]
-position = Vector2(1317, -355)
+position = Vector2(2112, 452)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1106, 406)

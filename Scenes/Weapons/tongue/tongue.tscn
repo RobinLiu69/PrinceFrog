@@ -91,6 +91,9 @@ _data = {
 z_index = 10
 z_as_relative = false
 script = ExtResource("1_8iam1")
+basic_damage = null
+speed = null
+radius = null
 
 [node name="Timer" type="Timer" parent="."]
 

@@ -28,9 +28,9 @@ func _on_timer_timeout() -> void:
 	
 func movement(delta: float) -> bool:
 	if target and not target_hit:
-		if is_instance_valid(target):
+		if is_instance_valid(target):from
 			look_at(target.global_position)
-			velocity = (Vector2.RIGHT * speed).rotated(rotation) * 2.5
+			velocity = global_position.direction_to(target.global_position) * speed * 2.5
 			return true
 		else:
 			hit()

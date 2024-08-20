@@ -28,7 +28,7 @@ func _on_timer_timeout() -> void:
 	
 func movement(delta: float) -> bool:
 	if target and not target_hit:
-		if is_instance_valid(target):from
+		if is_instance_valid(target):
 			look_at(target.global_position)
 			velocity = global_position.direction_to(target.global_position) * speed * 2.5
 			return true
@@ -56,7 +56,7 @@ func pull_target() -> bool:
 		if from.global_position.distance_squared_to(target.global_position) > (from.size * radius) ** 2:
 			target.global_position = global_position
 			return true
-		else:
+		else:				
 			pulled = true
 	return false	
 

@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://dl860kpavg68k"]
-
-[ext_resource type="Texture2D" uid="uid://xtpufuwxjqss" path="res://Image/Weapons/Tongue/frog_tongue_1.png" id="1_0j30u"]
-[ext_resource type="Script" path="res://Scripts/Weapons/tongue/tongue_mid.gd" id="2_yl6i8"]
-
-[node name="TonugeMid" type="Line2D"]
-texture = ExtResource("1_0j30u")
-texture_mode = 2
-script = ExtResource("2_yl6i8")

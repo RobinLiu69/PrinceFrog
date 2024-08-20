@@ -11,10 +11,11 @@ extends CharacterBody2D
 
 var target_hit: bool = false
 var pulled: bool = false
+var verify: bool = false
 
 
 func _ready():
-	timer.set_wait_time(1.5)
+	timer.set_wait_time(0.5)
 	timer.start()
 	anim.play("attack")
 
@@ -51,7 +52,7 @@ func hit():
 	target_hit = true
 	
 func pull_target() -> bool:
-	if is_instance_valid(target):
+	if is_instance_valid(target) and verify:
 		if from.global_position.distance_squared_to(target.global_position) > (from.size * radius) ** 2:
 			target.global_position = global_position
 			return true
@@ -63,6 +64,7 @@ func _on_tongue_hit_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_hit") and body != from and not target_hit:
 		var total_damage = basic_damage
 		body.handle_hit(from, total_damage)
+		verify = true
 		hit()
 	elif target_hit and body == from:
 		get_parent().tongue_exist = false

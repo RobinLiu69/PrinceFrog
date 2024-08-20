@@ -1,12 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bry40bjk45dd0"]
+[gd_scene load_steps=12 format=3 uid="uid://bry40bjk45dd0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/frog.gd" id="1_lxvj1"]
 [ext_resource type="Texture2D" uid="uid://daevipk0xvroi" path="res://Image/Frog/frog.png" id="2_31yrl"]
 [ext_resource type="Texture2D" uid="uid://khk7dektdgek" path="res://Image/Frog/frog_open_mouth_1.png" id="3_mfa1o"]
 [ext_resource type="Texture2D" uid="uid://c2s4ovnu34fmh" path="res://Image/Frog/frog_open_mouth_2.png" id="4_q0pub"]
 [ext_resource type="PackedScene" uid="uid://cwlo7cjjo4pla" path="res://Scenes/Weapons/tongue/tongue_maker.tscn" id="6_rwofu"]
-[ext_resource type="PackedScene" uid="uid://b3i6wvt57va3b" path="res://Scenes/Weapons/stone/stone_marker.tscn" id="6_yr4p5"]
-[ext_resource type="PackedScene" uid="uid://orm0gg2v7d3q" path="res://Scenes/Weapons/stick.tscn" id="7_b650r"]
+[ext_resource type="PackedScene" uid="uid://b3i6wvt57va3b" path="res://Scenes/Weapons/stone/stone_maker.tscn" id="6_yr4p5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e8uv4"]
 animations = [{
@@ -108,12 +107,9 @@ sprite_frames = SubResource("SpriteFrames_e8uv4")
 z_index = 5
 scale = Vector2(4, 4)
 
-[node name="StoneMarker" parent="Weapons" instance=ExtResource("6_yr4p5")]
+[node name="StoneMaker" parent="Weapons" instance=ExtResource("6_yr4p5")]
 
 [node name="TongueMaker" parent="Weapons" instance=ExtResource("6_rwofu")]
-scale = Vector2(0.25, 0.25)
-
-[node name="Stick" parent="Weapons" instance=ExtResource("7_b650r")]
 
 [node name="CharacterCollision" type="CollisionShape2D" parent="."]
 z_index = 10

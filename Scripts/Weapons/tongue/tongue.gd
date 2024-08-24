@@ -56,7 +56,7 @@ func pull_target() -> bool:
 		if from.global_position.distance_squared_to(target.global_position) > (from.size * radius) ** 2:
 			target.global_position = global_position
 			return true
-		else:				
+		else:
 			pulled = true
 	return false	
 

@@ -12,12 +12,11 @@ func _ready():
 	anim.play("attack")
 
 func _process(delta):
-	
 	movement(delta)
 	move_and_slide()
-	
-	
-	
+
+
+
 func movement(delta: float) -> bool:
 	if target:
 		velocity = (Vector2.RIGHT * speed).rotated(rotation) * 2.5
@@ -53,6 +52,3 @@ func _on_stone_body_entered(body: Node2D) -> void:
 		var total_damage = basic_damage
 		body.handle_hit(from, total_damage)
 		hit()
-		
-		
- 

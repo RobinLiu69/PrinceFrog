@@ -1,10 +1,10 @@
 [gd_scene load_steps=14 format=3 uid="uid://ceo8lbrpyhh8n"]
 
-[ext_resource type="Texture2D" uid="uid://dfy2vu21nxxex" path="res://Image/Enemy/Mouse/mouse_attack.png" id="1_g6ri5"]
+[ext_resource type="Texture2D" uid="uid://dfy2vu21nxxex" path="res://Images/Enemy/Mouse/mouse_attack.png" id="1_g6ri5"]
 [ext_resource type="Script" path="res://Scripts/Enemy/mouse.gd" id="1_jpacp"]
-[ext_resource type="Texture2D" uid="uid://dnk1n83p67aji" path="res://Image/Enemy/Mouse/mouse_1.png" id="2_aly1d"]
-[ext_resource type="Texture2D" uid="uid://d0oofvkd3p8yl" path="res://Image/Enemy/Mouse/mouse_2.png" id="3_tjw2s"]
-[ext_resource type="Texture2D" uid="uid://cjeo5rbb0ff27" path="res://Image/Enemy/Mouse/mouse_3.png" id="4_t62ya"]
+[ext_resource type="Texture2D" uid="uid://dnk1n83p67aji" path="res://Images/Enemy/Mouse/mouse_1.png" id="2_aly1d"]
+[ext_resource type="Texture2D" uid="uid://d0oofvkd3p8yl" path="res://Images/Enemy/Mouse/mouse_2.png" id="3_tjw2s"]
+[ext_resource type="Texture2D" uid="uid://cjeo5rbb0ff27" path="res://Images/Enemy/Mouse/mouse_3.png" id="4_t62ya"]
 [ext_resource type="PackedScene" uid="uid://b1wuee0m4u3o0" path="res://Scenes/GUI/health_bar.tscn" id="6_myu8n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5alhg"]

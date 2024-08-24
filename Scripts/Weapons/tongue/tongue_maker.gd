@@ -26,7 +26,7 @@ func find_nearst_enemy() -> CharacterBody2D:
 			nearst_enemy = enemy
 			distance = global_position.distance_squared_to(enemy.global_position)
 	
-	return nearst_enemy if nearst_enemy else null
+	return nearst_enemy if is_instance_valid(nearst_enemy) else null
 
 func attack(from: CharacterBody2D, damage_info: Array = [0]) -> bool:
 	if not in_cooldown:
@@ -43,7 +43,7 @@ func attack(from: CharacterBody2D, damage_info: Array = [0]) -> bool:
 	return false
 
 func spawn_projectile(from: CharacterBody2D, instance: CharacterBody2D, nearst_enemy: CharacterBody2D, scene: Node = null) -> bool:
-	if nearst_enemy or true:
+	if nearst_enemy:
 		instance.basic_damage = basic_damage
 		instance.speed = speed
 		instance.radius = radius

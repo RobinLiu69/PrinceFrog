@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://3nngb3oqocel"]
 
 [ext_resource type="Script" path="res://Scripts/Weapons/tongue/tongue.gd" id="1_8iam1"]
-[ext_resource type="Texture2D" uid="uid://xtpufuwxjqss" path="res://Images/Weapons/Tongue/frog_tongue_1.png" id="1_rrm7u"]
-[ext_resource type="Texture2D" uid="uid://dg16hufuwjsft" path="res://Images/Weapons/Tongue/frog_tongue_2.png" id="2_b5uqh"]
+[ext_resource type="Texture2D" uid="uid://xtpufuwxjqss" path="res://Images/Weapons/Tongue/frog_tongue_mid.png" id="1_rrm7u"]
+[ext_resource type="Texture2D" uid="uid://dg16hufuwjsft" path="res://Images/Weapons/Tongue/frog_tongue_end.png" id="2_b5uqh"]
 [ext_resource type="Script" path="res://Scripts/Weapons/tongue/tongue_mid.gd" id="3_g43cs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0y6jx"]

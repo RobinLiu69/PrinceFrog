@@ -20,7 +20,6 @@ position = Vector2(2112, 452)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1106, 406)
-zoom = Vector2(0.5, 0.5)
 
 [node name="Mouse3" parent="." instance=ExtResource("2_weea0")]
 position = Vector2(1303, 952)
@@ -28,8 +27,10 @@ position = Vector2(1303, 952)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 918.0
+offset_top = 368.0
+offset_right = 1318.0
+offset_bottom = 444.0
 value = 100.0
 texture_under = ExtResource("3_dbmlq")
 texture_over = ExtResource("3_oigd6")

@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var basic_damage: int
 @export var speed: int
 @export var radius: float
+@export var existing_time: float
 @export var from: CharacterBody2D = null
 @export var target: CharacterBody2D = null
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -11,11 +12,11 @@ extends CharacterBody2D
 
 var target_hit: bool = false
 var pulled: bool = false
-var verify: bool = false	
+var verify: bool = false
 
 
 func _ready():
-	timer.set_wait_time(1.5)
+	timer.set_wait_time(existing_time)
 	timer.start()
 	anim.play("attack")
 
@@ -24,7 +25,8 @@ func _process(delta):
 	move_and_slide()
 	
 func _on_timer_timeout() -> void:
-	hit()
+	if not target_hit:
+		hit()
 	
 func movement(delta: float) -> bool:
 	if target and not target_hit:
@@ -46,17 +48,18 @@ func movement(delta: float) -> bool:
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	hit()
 
-func hit():
-	print("hit")
+func hit(body: CharacterBody2D = null) -> void:
+	target = body
 	velocity = Vector2.ZERO
 	target_hit = true
 	
 func pull_target() -> bool:
-	if is_instance_valid(target) and verify:
+	if is_instance_valid(target):
 		if from.global_position.distance_squared_to(target.global_position) > (from.size * radius) ** 2:
 			target.global_position = global_position
 			return true
 		else:
+			print(from.global_position.distance_squared_to(target.global_position), (from.size * radius) ** 2)
 			pulled = true
 	return false	
 	
@@ -64,8 +67,7 @@ func _on_tongue_hit_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_hit") and body != from and not target_hit:
 		var total_damage = basic_damage
 		body.handle_hit(from, total_damage)
-		verify = true
-		hit()
+		hit(body)
 	elif target_hit and body == from:
 		get_parent().tongue_exist = false
 		from.anim.play("RESET")

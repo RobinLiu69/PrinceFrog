@@ -104,7 +104,7 @@ _data = {
 "walk": SubResource("Animation_uewcu")
 }
 
-[node name="Mouse" type="CharacterBody2D" groups=["enemy"]]
+[node name="Mouse" type="CharacterBody2D" groups=["aggressive", "all"]]
 scale = Vector2(4, 4)
 script = ExtResource("1_jpacp")
 

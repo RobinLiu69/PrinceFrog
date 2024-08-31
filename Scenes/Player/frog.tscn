@@ -93,7 +93,7 @@ _data = {
 "open_mouth": SubResource("Animation_1njcx")
 }
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["allay"]]
 collision_layer = 3
 script = ExtResource("1_lxvj1")
 
@@ -108,6 +108,22 @@ z_index = 5
 scale = Vector2(4, 4)
 
 [node name="StoneMaker" parent="Weapons" instance=ExtResource("6_yr4p5")]
+basic_damage = 30
+cooldown = 10.0
+speed = 500.0
+auto_spawn = null
+existing_time = 20.0
+trigger = null
+hit_count = null
+func_name = null
+satellite = null
+satellite_start_count = null
+satellite_max_count = null
+revolution_radius = null
+rotation_speed = null
+stun_time = 500.0
+slow_level = 0.6
+slow_time = 3.0
 
 [node name="TongueMaker" parent="Weapons" instance=ExtResource("6_rwofu")]
 

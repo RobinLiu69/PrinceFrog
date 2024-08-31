@@ -3,8 +3,8 @@ extends CharacterBody2D
 signal health_changed
 
 @export var speed: int = 100.0
-@export var max_health: int = 100
 @export var size: float = 100.0
+@export var max_health: int = 100
 @onready var weapons: Array[Node] = ($Weapons).get_children()
 @onready var player: AnimatedSprite2D = $Frog
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -13,7 +13,7 @@ signal health_changed
 
 
 func _ready():
-	print()
+	health_changed.emit()
 	# for weapon in weapons:
 		# print(weapon.current_scene.scene_file_path)
 

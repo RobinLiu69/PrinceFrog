@@ -181,5 +181,7 @@ libraries = {
 "": SubResource("AnimationLibrary_c0j5j")
 }
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]
 [connection signal="body_entered" from="StoneHit" to="." method="_on_stone_body_entered"]

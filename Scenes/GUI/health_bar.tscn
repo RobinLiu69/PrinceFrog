@@ -4,7 +4,7 @@
 
 [sub_resource type="Theme" id="Theme_yji0t"]
 
-[node name="HealthBar" type="TextureProgressBar"]
+[node name="HealthBar" type="ProgressBar"]
 modulate = Color(0.945098, 0.117647, 0.117647, 1)
 offset_left = -189.0
 offset_top = -29.0
@@ -14,4 +14,5 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = SubResource("Theme_yji0t")
 value = 100.0
+show_percentage = false
 script = ExtResource("1_jw350")

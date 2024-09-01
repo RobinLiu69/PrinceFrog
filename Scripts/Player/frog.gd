@@ -11,7 +11,6 @@ signal health_changed
 @onready var current_health: int = max_health
 
 
-
 func _ready():
 	health_changed.emit()
 	# for weapon in weapons:

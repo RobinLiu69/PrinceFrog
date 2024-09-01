@@ -123,10 +123,10 @@ animation = &"walk"
 shape = SubResource("RectangleShape2D_82twd")
 
 [node name="HealthBar" parent="." node_paths=PackedStringArray("player") instance=ExtResource("6_myu8n")]
-offset_left = -71.0
-offset_top = -36.0
-offset_right = 72.0
-offset_bottom = -19.0
+offset_left = -21.75
+offset_top = -25.0
+offset_right = 21.25
+offset_bottom = -17.0
 grow_horizontal = 1
 grow_vertical = 1
 player = NodePath("..")

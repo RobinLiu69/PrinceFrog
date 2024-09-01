@@ -1,9 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://3nngb3oqocel"]
+[gd_scene load_steps=11 format=3 uid="uid://3nngb3oqocel"]
 
 [ext_resource type="Script" path="res://Scripts/Weapons/tongue/tongue.gd" id="1_8iam1"]
 [ext_resource type="Texture2D" uid="uid://xtpufuwxjqss" path="res://Images/Weapons/Tongue/frog_tongue_mid.png" id="1_rrm7u"]
 [ext_resource type="Texture2D" uid="uid://dg16hufuwjsft" path="res://Images/Weapons/Tongue/frog_tongue_end.png" id="2_b5uqh"]
 [ext_resource type="Script" path="res://Scripts/Weapons/tongue/tongue_mid.gd" id="3_g43cs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0obkp"]
+radius = 0.01
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0y6jx"]
 size = Vector2(7, 12)
@@ -92,7 +95,13 @@ z_index = 10
 z_as_relative = false
 script = ExtResource("1_8iam1")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Tongue" type="Sprite2D" parent="."]
+scale = Vector2(1.175, 1.23214)
+texture = ExtResource("2_b5uqh")
+
+[node name="None" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0obkp")
+disabled = true
 
 [node name="TongueHit" type="Area2D" parent="."]
 collision_layer = 2
@@ -102,10 +111,6 @@ position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_0y6jx")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-
-[node name="Tongue" type="Sprite2D" parent="."]
-scale = Vector2(1.175, 1.23214)
-texture = ExtResource("2_b5uqh")
 
 [node name="TongueMid" type="Line2D" parent="."]
 top_level = true
@@ -123,6 +128,8 @@ libraries = {
 "": SubResource("AnimationLibrary_js3jt")
 }
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="body_entered" from="TongueHit" to="." method="_on_tongue_hit_body_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

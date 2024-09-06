@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://blx6jm0ttff4h"
-path="res://.godot/imported/Tongue.png-9c9cd7fb865eeae82626cebbdf1acefe.ctex"
+path="res://.godot/imported/Tongue.png-09f684a49b54b000602eb75b05459b1c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Image/UI/Tongue.png"
-dest_files=["res://.godot/imported/Tongue.png-9c9cd7fb865eeae82626cebbdf1acefe.ctex"]
+source_file="res://Images/UI/Tongue.png"
+dest_files=["res://.godot/imported/Tongue.png-09f684a49b54b000602eb75b05459b1c.ctex"]
 
 [params]
 

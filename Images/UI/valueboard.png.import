@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clkrys62a45rm"
-path="res://.godot/imported/valueboard.png-80f6fb16c67710c8fc248ec76c59e439.ctex"
+path="res://.godot/imported/valueboard.png-4e4bd6167750f1d4bc2e4f9deeef361d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Image/UI/valueboard.png"
-dest_files=["res://.godot/imported/valueboard.png-80f6fb16c67710c8fc248ec76c59e439.ctex"]
+source_file="res://Images/UI/valueboard.png"
+dest_files=["res://.godot/imported/valueboard.png-4e4bd6167750f1d4bc2e4f9deeef361d.ctex"]
 
 [params]
 

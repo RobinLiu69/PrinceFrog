@@ -1,11 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b20vte0pjva2v"]
+[gd_scene load_steps=4 format=3 uid="uid://b20vte0pjva2v"]
 
 [ext_resource type="PackedScene" uid="uid://bry40bjk45dd0" path="res://Scenes/Player/frog.tscn" id="1_6r5en"]
 [ext_resource type="PackedScene" uid="uid://ceo8lbrpyhh8n" path="res://Scenes/Enemy/mouse.tscn" id="2_weea0"]
-[ext_resource type="Script" path="res://Scripts/UI/texture_health_bar.gd" id="3_apas1"]
-[ext_resource type="Texture2D" uid="uid://c6cqft2hiacd1" path="res://Images/UI/health/health_background.png" id="3_dbmlq"]
-[ext_resource type="Texture2D" uid="uid://dk2vy5u7jl8uv" path="res://Images/UI/health/health_outline.png" id="3_oigd6"]
-[ext_resource type="Texture2D" uid="uid://dltymtystsiy0" path="res://Images/UI/health/health_bar.png" id="4_5abkj"]
+[ext_resource type="PackedScene" uid="uid://jah55jslxkyi" path="res://Scenes/GUI/canvas_layer.tscn" id="3_r0f0m"]
 
 [node name="root" type="Node2D"]
 
@@ -25,16 +22,5 @@ zoom = Vector2(0.5, 0.5)
 [node name="Mouse3" parent="." instance=ExtResource("2_weea0")]
 position = Vector2(2171, 1043)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
-offset_left = 918.0
-offset_top = 368.0
-offset_right = 1318.0
-offset_bottom = 444.0
-value = 100.0
-texture_under = ExtResource("3_dbmlq")
-texture_over = ExtResource("3_oigd6")
-texture_progress = ExtResource("4_5abkj")
-script = ExtResource("3_apas1")
-player = NodePath("../../Player")
+[node name="CanvasLayer" parent="." instance=ExtResource("3_r0f0m")]
+visible = false

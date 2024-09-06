@@ -3,20 +3,20 @@ extends Marker2D
 
 @export_category("Projectile")
 @export_group("Basic Setting")
-## If enter a nagative number is will bercome INF.
+## If enter a nagative number , it will become INF.
 @export var cooldown: float
 ## Projectile speed, if Satellite is on, than this speed become revolution speed.
 @export var speed: float
 ## A projectile scene, it should have the standard projectile variables. Otherwise, it will trigger an error.
 @export var projectile_scene: PackedScene
-## If turned on. W	hen calling attack method the projectile will spawned. Otherwise, it will spawn in certain conditions.(See in Trigger)
+## If turned on, when calling attack method the projectile will spawn. Otherwise, it will spawn in certain conditions.(See in Trigger)
 @export var auto_spawn: bool = false
-## If enter a nagative number is will bercome INF.
+## If enter a nagative number , it will become INF.
 @export var existing_time: float = -1
 @export_subgroup("Attack")
 @export_enum("aggressive", "friendly", "neutral", "all", "not in my group") var target_type: String
 @export_enum("nearest", "farthest", "random", "all") var attack_type: String
-## If enter a nagative number is will bercome heal.
+## If enter a negative number , it will become heal.
 @export var basic_damage: int
 ## Attacks deal a percentage of the owner's physical damage.
 @export_range(0, 1, 0.01) var physical_damage: float = 0
@@ -57,12 +57,12 @@ extends Marker2D
 @export_category("Ability")
 @export_group("Stun", "stun")
 @export var stun_active: bool = false
-## If enter a nagative number, it will bercome INF.
+## If enter a nagative number, it will become INF.
 @export var stun_time: float
 @export_group("Slow", "slow")
 @export var slow_active: bool = false
 @export_range(0, 1, 0.01) var slow_level: float
-## If enter a nagative number, it will bercome INF.
+## If enter a nagative number, it will become INF.
 @export var slow_time: float
 
 @onready var timer: Timer = $Timer
@@ -186,6 +186,11 @@ func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) 
 		if len(targets) == 1:
 			look_at(targets[0].global_position)
 			instance.rotation = rotation
+	if area_active:
+		instance.area_radius = area_radius
+	if satellite_active:
+		instance.revolution_radius = revolution_radius
+		instance.rotation_speed = rotation_speed
 	if stun_active:
 		instance.stun_time = stun_time
 	if slow_active:

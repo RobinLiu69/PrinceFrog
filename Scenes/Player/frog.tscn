@@ -108,10 +108,9 @@ z_index = 5
 scale = Vector2(4, 4)
 
 [node name="WeaponStone" parent="Weapons" instance=ExtResource("5_aptuc")]
-radius = null
+radius = 0.0
 
 [node name="TongueMaker" parent="Weapons" instance=ExtResource("6_rwofu")]
-radius = null
 
 [node name="CharacterCollision" type="CollisionShape2D" parent="."]
 z_index = 10

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://buahsb81gl1uo"
-path="res://.godot/imported/resistance.png-5c051e6342dad06be13c6d7a9d3457a5.ctex"
+path="res://.godot/imported/resistance.png-45c716ee48cd6a00b56037ea259c8ef3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Image/UI/resistance.png"
-dest_files=["res://.godot/imported/resistance.png-5c051e6342dad06be13c6d7a9d3457a5.ctex"]
+source_file="res://Images/UI/resistance.png"
+dest_files=["res://.godot/imported/resistance.png-45c716ee48cd6a00b56037ea259c8ef3.ctex"]
 
 [params]
 

@@ -7,4 +7,4 @@ func _process(delta: float) -> void:
 	pass
 
 func damage(attacker, victim, value) -> bool:
-	attacker
+	return true

@@ -6,7 +6,7 @@ func stun(vitim: CharacterBody2D, duration: float = 0) -> bool:
 	if "stun_timer" not in vitim:
 		var stun_timer = Timer.new()
 		stun_timer.name = "StunTimer"
-		stun_timer.connect(stun_end)
+		#stun_timer.connect(stun_end)
 		return true
 	else:
 		if vitim.stun_timer.time_left() < duration:

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cljbyk56xv8xs"]
+
+[ext_resource type="Script" path="res://Scripts/Weapons/range_weapon.gd" id="1_wv3d6"]
+[ext_resource type="PackedScene" uid="uid://ix7t28miveyb" path="res://Scenes/Weapons/stone/stone.tscn" id="2_bikrt"]
+
+[node name="WeaponStone" type="Marker2D"]
+script = ExtResource("1_wv3d6")
+cooldown = 2.0
+speed = 300.0
+projectile_scene = ExtResource("2_bikrt")
+auto_spawn = true
+target_type = "aggressive"
+attack_type = "nearest"
+basic_damage = 15
+physical_damage = 0.1
+spawn_at_root_scene = true
+facing_the_target_rotation = true
+radius = null
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

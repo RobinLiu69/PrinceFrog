@@ -44,6 +44,9 @@ func hit(body: CharacterBody2D) -> void:
 	await anim.animation_finished
 	queue_free()
 
+func stun():
+	pass
+
 func _on_stone_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_hit") and body in targets:
 		var total_damage = basic_damage

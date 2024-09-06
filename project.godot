@@ -15,6 +15,11 @@ run/main_scene="res://Scenes/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+EffectFuncs="*res://effect_funcs.gd"
+AttackFunc="*res://attack_func.gd"
+
 [global_group]
 
 friendly=""

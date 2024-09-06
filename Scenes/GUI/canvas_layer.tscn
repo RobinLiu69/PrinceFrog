@@ -1,0 +1,184 @@
+[gd_scene load_steps=11 format=3 uid="uid://jah55jslxkyi"]
+
+[ext_resource type="Texture2D" uid="uid://cjbjk65d41q4k" path="res://Image/UI/keyboard.png" id="1_yyvgg"]
+[ext_resource type="Texture2D" uid="uid://3suolkjylsdi" path="res://Image/UI/downboard.png" id="2_xltxl"]
+[ext_resource type="Texture2D" uid="uid://clkrys62a45rm" path="res://Image/UI/valueboard.png" id="3_bkmn8"]
+[ext_resource type="Texture2D" uid="uid://ddfje07d6b7sh" path="res://Image/UI/health.png" id="4_ft4sn"]
+[ext_resource type="Texture2D" uid="uid://espg5s6wwt3b" path="res://Image/UI/damage.png" id="5_vt4vq"]
+[ext_resource type="Texture2D" uid="uid://x2i4grlfo8f" path="res://Image/UI/defence.png" id="6_cjebw"]
+[ext_resource type="Texture2D" uid="uid://buahsb81gl1uo" path="res://Image/UI/resistance.png" id="7_0ukl4"]
+[ext_resource type="Texture2D" uid="uid://dchxq7anwcm8t" path="res://Image/UI/critical.png" id="8_vmenv"]
+[ext_resource type="Texture2D" uid="uid://bcldtwcfbpy2t" path="res://Image/UI/speed.png" id="9_4jycf"]
+[ext_resource type="Texture2D" uid="uid://dqsd4o8ko81pf" path="res://Image/UI/keyboardmini.png" id="10_7vtgn"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+modulate = Color(1, 1, 1, 0.611765)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_yyvgg")
+
+[node name="downboard" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_top = 0.7
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0799998
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("2_xltxl")
+
+[node name="valueboard" type="TextureRect" parent="Control/downboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.863
+anchor_top = 0.113
+anchor_right = 1.001
+anchor_bottom = 1.0
+offset_left = -1.17603
+offset_top = 0.0779991
+offset_right = -1.1521
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("3_bkmn8")
+
+[node name="GridContainer" type="GridContainer" parent="Control/downboard/valueboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.063
+anchor_top = 0.052
+anchor_right = 0.937
+anchor_bottom = 0.942
+offset_left = -0.017004
+offset_top = 0.0559998
+offset_right = 0.0169373
+offset_bottom = -0.0759888
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/downboard/valueboard/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Control/downboard/valueboard/GridContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_ft4sn")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Control/downboard/valueboard/GridContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"TooltipLabel"
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/downboard/valueboard/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Control/downboard/valueboard/GridContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("5_vt4vq")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Control/downboard/valueboard/GridContainer/HBoxContainer2"]
+layout_mode = 2
+theme_type_variation = &"TooltipLabel"
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/downboard/valueboard/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Control/downboard/valueboard/GridContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("6_cjebw")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Control/downboard/valueboard/GridContainer/HBoxContainer3"]
+layout_mode = 2
+theme_type_variation = &"TooltipLabel"
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Control/downboard/valueboard/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Control/downboard/valueboard/GridContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("7_0ukl4")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Control/downboard/valueboard/GridContainer/HBoxContainer4"]
+layout_mode = 2
+theme_type_variation = &"TooltipLabel"
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Control/downboard/valueboard/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Control/downboard/valueboard/GridContainer/HBoxContainer5"]
+layout_mode = 2
+texture = ExtResource("8_vmenv")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Control/downboard/valueboard/GridContainer/HBoxContainer5"]
+layout_mode = 2
+theme_type_variation = &"TooltipLabel"
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Control/downboard/valueboard/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Control/downboard/valueboard/GridContainer/HBoxContainer6"]
+layout_mode = 2
+texture = ExtResource("9_4jycf")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control/downboard/valueboard/GridContainer/HBoxContainer6"]
+layout_mode = 2
+theme_type_variation = &"TooltipLabel"
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/downboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.056
+anchor_top = 0.206
+anchor_right = 0.359
+anchor_bottom = 0.903
+offset_right = 0.270111
+offset_bottom = 0.00318909
+
+[node name="TextureRect" type="TextureRect" parent="Control/downboard/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("10_7vtgn")

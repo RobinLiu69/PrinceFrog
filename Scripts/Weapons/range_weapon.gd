@@ -23,7 +23,7 @@ extends Marker2D
 @export_group("Advance Setting")
 ## This will make the projectiles spawn at the root scene, this means it will not move with the owner.
 @export var spawn_at_root_scene: bool = false
-## This will make the projectiles facing the target by turning marker rotation and copy it to the projectile rotaion. If there are multiple targets and it is turned on, will trigger an error.
+## This will make the projectiles facing the target by turning marker rotation and copy it to the projectile rotaion. If there are multiple targets , will facing the closest target.
 @export var facing_the_target_rotation: bool = false
 @export_enum("owner", "marker") var defult_position: String = "marker"
 
@@ -45,6 +45,11 @@ extends Marker2D
 @export var area_active: bool = false
 ## Area radius is based on the owner size. etc 150% (1.5), 50% (0.5) of thw owner size.
 @export var area_radius: float
+@export_group("Multiple Projectiles")
+@export var multiple_projectiles_active: bool = false
+@export var projectiles_amount: int
+## It is for the angle between two projectiles(Degree).
+@export var shooting_angle: float
 @export_group("Satellite")
 @export var satellite_active: bool = false
 ## If enter a nagative number, will trigger an error.
@@ -60,11 +65,11 @@ extends Marker2D
 @export var stun_active: bool = false
 ## If enter a nagative number, it will become INF.
 @export var stun_time: float
-@export_group("Slow", "slow")
-@export var slow_active: bool = false
-@export_range(0, 1, 0.01) var slow_level: float
+@export_group("Slow", "slowness")
+@export var slowness_active: bool = false
+@export_range(0, 1, 0.01) var slowness_level: float
 ## If enter a nagative number, it will become INF.
-@export var slow_time: float
+@export var slowness_time: float
 
 @onready var cooldown_timer: Timer = Timer.new()
 
@@ -80,21 +85,22 @@ var hit_count: int = 0
 func _ready() -> void:
 	assert(projectile_scene, " Not a valid projectile scene")
 	var test_projectile: CharacterBody2D = projectile_scene.instantiate()
-	assert("from" in test_projectile, " Projectile don't have the required variable < from >")
-	assert("maker" in test_projectile, " Projectile don't have the required variable < maker >")
-	assert("basic_damage" in test_projectile, " Projectile don't have the required variable < basic_damage >")
-	assert("speed" in test_projectile, " Projectile don't have the required variable < speed >")
-	assert("targets" in test_projectile, " Projectile don't have the required variable < targets >")
-	assert("existing_time" in test_projectile, " Projectile don't have the required variable < existing_time >")
-	assert(not (test_projectile.has_method("stun") == stun_active and stun_active), " Projectile don't have the stun method under it")
-	assert(not (test_projectile.has_method("slow") == slow_active and slow_active), " Projectile don't have the slow method under it")
+	assert("from" in test_projectile, test_projectile.name+" don't have the required variable <from>")
+	assert("maker" in test_projectile, test_projectile.name+" don't have the required variable <maker>")
+	assert("basic_damage" in test_projectile, test_projectile.name+" don't have the required variable <basic_damage>")
+	assert("speed" in test_projectile, test_projectile.name+" don't have the required variable <speed>")
+	assert("targets" in test_projectile, test_projectile.name+" don't have the required variable <targets>")
+	assert("existing_time" in test_projectile, test_projectile.name+" don't have the required variable <existing_time>")
+	assert(not stun_active or ("stun_time" in test_projectile), test_projectile.name+" don't have the stun method under it")
+	assert(not slowness_active or ("slowness_level" in test_projectile and "slowness_time" in test_projectile), test_projectile.name+" don't have the slow method under it")
 	assert(obj_start_count >= 0, " Can't set obj start count to a nagative number.")
 	assert(obj_max_count >= obj_start_count, " Can't have obj start count bigger than obj max count.")
-	assert(not (attack_type == "all" and facing_the_target_rotation == true), " Can't facing mutiple targets.")
+	#assert(not (attack_type == "all" and facing_the_target_rotation == true), " Can't facing mutiple targets.")
 	test_projectile.queue_free()
 	
 	add_child(cooldown_timer)
 	cooldown_timer.name = "CooldownTimer"
+	cooldown_timer.one_shot = true
 	
 	cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
 	
@@ -130,7 +136,7 @@ func find_random_target(target_list: Array[Node]) -> CharacterBody2D:
 
 func get_target_list() -> Array[Node]:
 	var owner_group_names: Array[StringName] = owner.get_groups()
-	var target_list: Array
+	var target_list: Array[Node]
 	match target_type:
 		"not in my group":
 			for group_name in group_names.filter(func(name): return name not in owner_group_names):
@@ -146,18 +152,28 @@ func attack(from: CharacterBody2D, damage_info: Array = [0]) -> bool:
 		if cooldown > 0:
 			cooldown_timer.set_wait_time(cooldown)
 			cooldown_timer.start()
-			print("Timerstart ", cooldown)
 		
-		spawn_projectile(from)
+		if multiple_projectiles_active:
+			for i in range(projectiles_amount):
+				adjust_projectiles_angle(spawn_projectile(from), i)
+		else:
+			spawn_projectile(from)
 	return false
+
+func adjust_projectiles_angle(projectile: CharacterBody2D, i: int) -> void:
+	var j: int = 1 if i%2 == 0 else -1
+	if projectiles_amount%2 == 1:
+		projectile.rotation_degrees += (shooting_angle*floor((i+1)/2)*j)
+	else:
+		projectile.rotation_degrees += (shooting_angle*floor((i)/2)*j) + shooting_angle/2 * j
 
 func satellite_movment(delta: float) -> void:
 	for i in range(len(obj_list)):
 		var obj = obj_list[i]
 		var orbit_angle = TAU * (i/float(obj_count))
-		obj.position = Vector2(cos(orbit_angle), sin(orbit_angle)) * ((revolution_radius * owner.size) ** 2)
+		obj.position = Vector2(cos(orbit_angle), sin(orbit_angle)) * (revolution_radius * owner.size)
 		obj.rotation += rotation_speed * delta * randf()
-	rotation += speed * delta
+	rotation += owner.speed/100 * speed * delta if owner else 0
 
 func add_projectile() -> void:
 	if obj_count < obj_max_count:
@@ -192,7 +208,10 @@ func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) 
 	if facing_the_target_rotation:
 		if len(targets) == 1:
 			look_at(targets[0].global_position)
-			instance.rotation = rotation	
+			instance.rotation = rotation
+		else:
+			look_at(find_the_nearest_target(target_list).global_position)
+			instance.rotation = rotation
 	if area_active:
 		instance.area_radius = area_radius
 	if satellite_active:
@@ -200,9 +219,9 @@ func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) 
 		instance.rotation_speed = rotation_speed
 	if stun_active:
 		instance.stun_time = stun_time
-	if slow_active:
-		instance.slow_time = slow_time
-		instance.slow_level = slow_level
+	if slowness_active:
+		instance.slowness_time = slowness_time
+		instance.slowness_level = slowness_level
 	if defult_position == "marker" and set_position == Vector2.ZERO:
 		instance.global_position = global_position
 	elif defult_position == "onwer" and set_position == Vector2.ZERO:
@@ -216,6 +235,7 @@ func hit_counter() -> void:
 	hit_count += 1
 	if hit_count == trigger_hit_count:
 		call(trigger_func_name)
+		hit_count = 0
 
 func _process(delta: float) -> void:
 	if satellite_active:
@@ -223,5 +243,4 @@ func _process(delta: float) -> void:
 
 
 func _on_cooldown_timer_timeout() -> void:
-	print("TimerEnd")
 	in_cooldown = false

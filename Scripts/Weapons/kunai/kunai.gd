@@ -12,7 +12,6 @@ var from: CharacterBody2D = null
 var targets: Array[Node] = []
 
 func _ready():
-	anim.play("attack")
 	if existing_time > 0:
 		exisiting_timer.set_wait_time(existing_time)
 		exisiting_timer.start()
@@ -31,27 +30,20 @@ func movement(delta: float) -> bool:
 		return true
 	return false
 
-func _on_visible_on_screen_enabler_2d_screen_exited():
-	queue_free()
 
 func hit(body: CharacterBody2D) -> void:
 	maker.hit_counter()
-	velocity = Vector2.ZERO
-	anim.play("break", -1., 3)
 	targets = []
-	await anim.animation_finished
 	queue_free()
 
-func stun():
-	pass
+func _on_exisiting_timer_timeout() -> void:
+	queue_free()
 
-func _on_stone_body_entered(body: Node2D) -> void:
+func _on_kunai_hit_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_hit") and body in targets:
 		var total_damage = basic_damage
 		body.handle_hit(from, total_damage)
-		EffectFuncs.slowness(body, 0.5, 5)
 		hit(body)
 
-
-func _on_exisiting_timer_timeout() -> void:
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	queue_free()

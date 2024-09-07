@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://x7u4n4ld201q"]
 
 [ext_resource type="Script" path="res://Scripts/Weapons/leaf/leaf.gd" id="1_xftj3"]
-[ext_resource type="Texture2D" uid="uid://cvvw1anqntgpw" path="res://Images/Weapons/Leaf/leaf.png" id="2_j2gfb"]
+[ext_resource type="Texture2D" uid="uid://cvvw1anqntgpw" path="res://Images/Weapons/leaf/leaf.png" id="2_j2gfb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v0p44"]
 animations = [{

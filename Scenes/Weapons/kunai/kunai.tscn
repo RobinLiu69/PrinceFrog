@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1mp2kos8cfht"]
+
+[ext_resource type="Script" path="res://Scripts/Weapons/kunai/kunai.gd" id="1_4dek5"]
+[ext_resource type="Texture2D" uid="uid://oq7n5ugq7sqc" path="res://Images/Weapons/kunai/kunai.png" id="2_4mtwy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jectq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4mtwy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rpa17"]
+radius = 4.0
+height = 16.0
+
+[node name="Kunai" type="CharacterBody2D"]
+scale = Vector2(4, 4)
+script = ExtResource("1_4dek5")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -2.38419e-07)
+scale = Vector2(0.8, 0.4)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = 1.5708
+sprite_frames = SubResource("SpriteFrames_jectq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../KunaiHit/HitBox")
+
+[node name="ExisitingTimer" type="Timer" parent="."]
+
+[node name="KunaiHit" type="Area2D" parent="."]
+
+[node name="HitBox" type="CollisionShape2D" parent="KunaiHit"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_rpa17")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="timeout" from="ExisitingTimer" to="." method="_on_exisiting_timer_timeout"]
+[connection signal="area_entered" from="KunaiHit" to="." method="_on_kunai_hit_area_entered"]
+[connection signal="body_entered" from="KunaiHit" to="." method="_on_kunai_hit_body_entered"]

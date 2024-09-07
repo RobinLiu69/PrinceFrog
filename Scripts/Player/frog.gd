@@ -58,6 +58,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float):
 	movement(delta)
-	
-	
 	move_and_slide()

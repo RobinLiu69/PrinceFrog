@@ -4,20 +4,19 @@
 [ext_resource type="PackedScene" uid="uid://x7u4n4ld201q" path="res://Scenes/Weapons/leaf/leaf.tscn" id="2_br0o8"]
 
 [node name="WeaponLeaf" type="Marker2D"]
-rotation = 20496.5
+rotation = 20689.8
 script = ExtResource("1_sq5ew")
 speed = 2.0
 projectile_scene = ExtResource("2_br0o8")
 target_type = "all"
 attack_type = "all"
 basic_damage = 20
-facing_the_target_rotation = true
 trigger_active = true
 trigger_hit_count = 3
+multiple_projectiles_active = null
+multiple_projectiles_amount = null
 satellite_active = true
 obj_start_count = 2
 obj_max_count = 10
 revolution_radius = 1.0
 rotation_speed = 10.0
-
-[node name="Timer" type="Timer" parent="."]

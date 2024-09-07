@@ -117,8 +117,6 @@ shape = SubResource("CircleShape2D_5alhg")
 sprite_frames = SubResource("SpriteFrames_ktfjp")
 animation = &"walk"
 
-[node name="Weapons" type="Node2D" parent="."]
-
 [node name="CharacterCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_82twd")
 
@@ -136,7 +134,10 @@ libraries = {
 "": SubResource("AnimationLibrary_ciap4")
 }
 
-[node name="SlowTimerList" type="Node2D" parent="."]
+[node name="Weapons" type="Node2D" parent="."]
+
+[node name="EffectDisplay" type="Marker2D" parent="."]
+position = Vector2(9.5, 11.25)
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

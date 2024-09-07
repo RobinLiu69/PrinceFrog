@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://njhpc5qcstb3"]
+
+[ext_resource type="Script" path="res://Scripts/Weapons/poop/poop_area.gd" id="1_0piqg"]
+[ext_resource type="Texture2D" uid="uid://dseskjgc16sts" path="res://Images/Weapons/poop/poop04.png" id="2_i2wgf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_37bfp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_i2wgf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06mcd"]
+radius = 80.0
+
+[node name="PoopArea" type="CharacterBody2D"]
+z_index = -1
+script = ExtResource("1_0piqg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_37bfp")
+
+[node name="PoopAreaHit" type="Area2D" parent="."]
+
+[node name="HitBox" type="CollisionShape2D" parent="PoopAreaHit"]
+shape = SubResource("CircleShape2D_06mcd")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="PoopAreaHit" to="." method="_on_poop_area_hit_body_entered"]
+[connection signal="body_exited" from="PoopAreaHit" to="." method="_on_poop_area_hit_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

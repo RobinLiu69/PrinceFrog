@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://daevipk0xvroi" path="res://Images/Frog/frog.png" id="2_31yrl"]
 [ext_resource type="Texture2D" uid="uid://khk7dektdgek" path="res://Images/Frog/frog_open_mouth_1.png" id="3_mfa1o"]
 [ext_resource type="Texture2D" uid="uid://c2s4ovnu34fmh" path="res://Images/Frog/frog_open_mouth_2.png" id="4_q0pub"]
-[ext_resource type="PackedScene" uid="uid://cljbyk56xv8xs" path="res://Scenes/Weapons/stone/waepon_stone.tscn" id="5_aptuc"]
+[ext_resource type="PackedScene" uid="uid://dw5b47keac54k" path="res://Scenes/Weapons/kunai/weapon_kunai.tscn" id="7_w5bom"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e8uv4"]
 animations = [{
@@ -106,7 +106,7 @@ sprite_frames = SubResource("SpriteFrames_e8uv4")
 z_index = 5
 scale = Vector2(4, 4)
 
-[node name="WeaponStone" parent="Weapons" instance=ExtResource("5_aptuc")]
+[node name="WeaponKunai" parent="Weapons" instance=ExtResource("7_w5bom")]
 
 [node name="CharacterCollision" type="CollisionShape2D" parent="."]
 z_index = 10

@@ -90,7 +90,7 @@ func _ready() -> void:
 	assert(not (test_projectile.has_method("slow") == slow_active and slow_active), " Projectile don't have the slow method under it")
 	assert(obj_start_count >= 0, " Can't set obj start count to a nagative number.")
 	assert(obj_max_count >= obj_start_count, " Can't have obj start count bigger than obj max count.")
-	assert(attack_type != "all" and facing_the_target_rotation == true, " Can't facing mutiple targets.")
+	assert(not (attack_type == "all" and facing_the_target_rotation == true), " Can't facing mutiple targets.")
 	test_projectile.queue_free()
 	
 	add_child(cooldown_timer)

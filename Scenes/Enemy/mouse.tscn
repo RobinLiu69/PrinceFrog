@@ -136,5 +136,7 @@ libraries = {
 "": SubResource("AnimationLibrary_ciap4")
 }
 
+[node name="SlowTimerList" type="Node2D" parent="."]
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

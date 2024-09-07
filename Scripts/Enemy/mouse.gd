@@ -4,15 +4,17 @@ signal health_changed
 
 @export var speed: float = 50.0
 @export var max_health: int = 100
+@export var slow_resistance: float = 0
 @export var stun_resistance: float = 0
 @onready var weapons: Array[Node] = ($Weapons).get_children()
+@onready var slow_timer_list: Array[Node] = ($SlowTimerList).get_children()
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var sprite: AnimatedSprite2D = $Mouse
 @onready var current_health: int = max_health
 @onready var enemy_list: Array[Node] = get_tree().get_nodes_in_group("enemy")
 @onready var player_chase = false
 var player: CharacterBody2D = null
-var slow_record: Array[float] = []
+var slow_record: Dictionary = {}
 
 
 func _ready():
@@ -62,6 +64,13 @@ func alive() -> bool:
 func movement(delta: float) -> bool:
 	if player_chase:
 		velocity = position.direction_to(player.position) * speed * 2.5
+		#EffectFuncs.slow_calculate(self)
+		
+		for slow_level in slow_record:
+			velocity = velocity * (1 - slow_resistance) * slow_level
+		print(player)
+		print(velocity) if velocity else 0
+
 		anim.play("walk")
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed * 15 * delta)

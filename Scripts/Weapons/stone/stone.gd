@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var timer: Timer = $Timer
+@onready var exisiting_timer: Timer = $ExisitingTimer
 
 var basic_damage: int
 var speed: float
@@ -14,8 +14,8 @@ var targets: Array[Node] = []
 func _ready():
 	anim.play("attack")
 	if existing_time > 0:
-		timer.set_wait_time(existing_time)
-		timer.start()
+		exisiting_timer.set_wait_time(existing_time)
+		exisiting_timer.start()
 	
 	
 
@@ -52,3 +52,7 @@ func _on_stone_body_entered(body: Node2D) -> void:
 		var total_damage = basic_damage
 		body.handle_hit(from, total_damage)
 		hit(body)
+
+
+func _on_exisiting_timer_timeout() -> void:
+	pass # Replace with function body.

@@ -12,8 +12,7 @@ signal health_changed
 @onready var enemy_list: Array[Node] = get_tree().get_nodes_in_group("enemy")
 @onready var player_chase = false
 var player: CharacterBody2D = null
-var slow: bool = false
-var slow_record: float = 0.0
+var slow_record: Array[float] = []
 
 
 func _ready():
@@ -34,20 +33,6 @@ func _on_detection_area_body_exited(body):
 	if body not in enemy_list:
 		player = null
 		player_chase = false
-
-func remove_slow() -> bool:
-	remove_child($SlowTimer)
-	slow = false
-	speed += slow_record
-	slow_record = 0
-	return true
-	
-func got_slow(slow_level) -> bool:
-	slow = true
-	slow_record = speed * slow_level
-	speed -= slow_record
-	print(speed)
-	return true
 
 		
 func remove_stun() -> bool:

@@ -11,7 +11,7 @@ extends Marker2D
 @export var projectile_scene: PackedScene
 ## If turned on, when calling attack method the projectile will spawn. Otherwise, it will spawn in certain conditions.(See in Trigger)
 @export var auto_spawn: bool = false
-## If enter a nagative number , it will become INF.
+## The time projectile will last for. When reached the time it will called the projectile's "_on_exisiting_timer_timeout". If enter a nagative number , it will become INF.
 @export var existing_time: float = -1
 @export_subgroup("Attack")
 @export_enum("aggressive", "friendly", "neutral", "all", "not in my group") var target_type: String
@@ -21,14 +21,11 @@ extends Marker2D
 ## Attacks deal a percentage of the owner's physical damage.
 @export_range(0, 1, 0.01) var physical_damage: float = 0
 @export_group("Advance Setting")
+## This will make the projectiles spawn at the root scene, this means it will not move with the owner.
 @export var spawn_at_root_scene: bool = false
-## If there are multiple targets and it is turned on, will trigger an error.
+## This will make the projectiles facing the target by turning marker rotation and copy it to the projectile rotaion. If there are multiple targets and it is turned on, will trigger an error.
 @export var facing_the_target_rotation: bool = false
 @export_enum("owner", "marker") var defult_position: String = "marker"
-## If enter a nagative number, will trigger an error.
-@export var obj_start_count: int
-##  If "obj max count smaller" than "obj start count", will trigger an error.
-@export var obj_max_count: int
 
 
 @export_category("Trigger") 
@@ -50,6 +47,10 @@ extends Marker2D
 @export var area_radius: float
 @export_group("Satellite")
 @export var satellite_active: bool = false
+## If enter a nagative number, will trigger an error.
+@export var obj_start_count: int
+##  If "obj max count smaller" than "obj start count", will trigger an error.
+@export var obj_max_count: int
 ## Rvolution radius is based on the owner size. etc 150% (1.5), 50% (0.5) of thw owner size.
 @export var revolution_radius: float
 @export var rotation_speed: float
@@ -65,7 +66,7 @@ extends Marker2D
 ## If enter a nagative number, it will become INF.
 @export var slow_time: float
 
-@onready var timer: Timer = $Timer
+@onready var cooldown_timer: Timer = Timer.new()
 
 const group_names: Array[String] = ["aggressive", "friendly", "neutral"]
 const size_correction: float = 1.75
@@ -74,7 +75,6 @@ var obj_list: Array[Node] = []
 var obj_count: int = 0
 var in_cooldown: bool = false
 var hit_count: int = 0
-
 
 
 func _ready() -> void:
@@ -92,6 +92,12 @@ func _ready() -> void:
 	assert(obj_max_count >= obj_start_count, " Can't have obj start count bigger than obj max count.")
 	assert(attack_type != "all" and facing_the_target_rotation == true, " Can't facing mutiple targets.")
 	test_projectile.queue_free()
+	
+	add_child(cooldown_timer)
+	cooldown_timer.name = "CooldownTimer"
+	
+	cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
+	
 	radius *= size_correction
 	if satellite_active:
 		for i in range(obj_start_count):
@@ -138,8 +144,9 @@ func attack(from: CharacterBody2D, damage_info: Array = [0]) -> bool:
 	if not in_cooldown and projectile_scene and auto_spawn:
 		in_cooldown = true
 		if cooldown > 0:
-			timer.set_wait_time(cooldown)
-			timer.start()
+			cooldown_timer.set_wait_time(cooldown)
+			cooldown_timer.start()
+			print("Timerstart ", cooldown)
 		
 		spawn_projectile(from)
 	return false
@@ -215,5 +222,6 @@ func _process(delta: float) -> void:
 		satellite_movment(delta)
 
 
-func _on_timer_timeout() -> void:
+func _on_cooldown_timer_timeout() -> void:
+	print("TimerEnd")
 	in_cooldown = false

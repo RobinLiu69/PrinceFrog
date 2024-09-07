@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://x7u4n4ld201q"]
+
+[ext_resource type="Script" path="res://Scripts/Weapons/leaf/leaf.gd" id="1_xftj3"]
+[ext_resource type="Texture2D" uid="uid://cvvw1anqntgpw" path="res://Images/Weapons/Leaf/leaf.png" id="2_j2gfb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v0p44"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_j2gfb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nu6qb"]
+
+[node name="Leaf" type="CharacterBody2D"]
+script = ExtResource("1_xftj3")
+
+[node name="CharacterBody2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_v0p44")
+
+[node name="LeafHit" type="Area2D" parent="."]
+
+[node name="Hitbox" type="CollisionShape2D" parent="LeafHit"]
+shape = SubResource("CircleShape2D_nu6qb")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="LeafHit" to="." method="_on_leaf_hit_body_entered"]

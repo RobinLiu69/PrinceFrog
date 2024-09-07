@@ -185,7 +185,7 @@ func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) 
 	if facing_the_target_rotation:
 		if len(targets) == 1:
 			look_at(targets[0].global_position)
-			instance.rotation = rotation
+			instance.rotation = rotation	
 	if area_active:
 		instance.area_radius = area_radius
 	if satellite_active:

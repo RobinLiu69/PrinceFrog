@@ -1,6 +1,6 @@
 extends Node
 
-const  SLOWNESSICON = preload("res://Images/Effects/slowness.png")
+const SLOWNESSICON = preload("res://Images/Effects/slowness.png")
 
 
 func effect_update(body: CharacterBody2D) -> void:

@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-EffectFuncs="*res://Scripts/Global/effect_func.gd"
+EffectFunc="*res://Scripts/Global/effect_func.gd"
 AttackFunc="*res://Scripts/Global/attack_func.gd"
 
 [global_group]

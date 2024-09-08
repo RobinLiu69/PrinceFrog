@@ -31,7 +31,7 @@ func movement(delta: float) -> bool:
 			player.flip_h = true
 		elif velocity.x > 0:
 			player.flip_h = false
-				
+
 		return true
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed * 15 * delta)
@@ -53,7 +53,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		for weapon in weapons:
 			if weapon.has_method("attack"):
 				weapon.attack(self)
-			
 
 
 func _physics_process(delta: float):

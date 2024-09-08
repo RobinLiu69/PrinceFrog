@@ -195,9 +195,5 @@ libraries = {
 "": SubResource("AnimationLibrary_jvlxk")
 }
 
-[node name="GridContainer" type="GridContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="StickHit" to="." method="_on_stick_hit_body_entered"]

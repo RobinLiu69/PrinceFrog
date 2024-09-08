@@ -15,4 +15,3 @@ basic_damage = 15
 physical_damage = 0.1
 spawn_at_root_scene = true
 facing_the_target_rotation = true
-original_shooting_angle = null

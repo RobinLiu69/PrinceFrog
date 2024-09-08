@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cljbyk56xv8xs"]
 
-[ext_resource type="Script" path="res://Scripts/Weapons/range_weapon.gd" id="1_wv3d6"]
+[ext_resource type="Script" path="res://Scripts/Weapons/ranged_weapon.gd" id="1_wv3d6"]
 [ext_resource type="PackedScene" uid="uid://ix7t28miveyb" path="res://Scenes/Weapons/stone/stone.tscn" id="2_bikrt"]
 
 [node name="WeaponStone" type="Marker2D"]
@@ -15,3 +15,4 @@ basic_damage = 15
 physical_damage = 0.1
 spawn_at_root_scene = true
 facing_the_target_rotation = true
+original_shooting_angle = null

@@ -49,7 +49,6 @@ func _on_stone_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_hit") and body in targets:
 		var total_damage = basic_damage
 		body.handle_hit(from, total_damage)
-		EffectFuncs.slowness(body, 0.5, 5)
 		hit(body)
 
 

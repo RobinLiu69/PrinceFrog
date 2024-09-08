@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cutsrhvrnca84"]
 
-[ext_resource type="Script" path="res://Scripts/Weapons/range_weapon.gd" id="1_sq5ew"]
+[ext_resource type="Script" path="res://Scripts/Weapons/ranged_weapon.gd" id="1_sq5ew"]
 [ext_resource type="PackedScene" uid="uid://x7u4n4ld201q" path="res://Scenes/Weapons/leaf/leaf.tscn" id="2_br0o8"]
 
 [node name="WeaponLeaf" type="Marker2D"]

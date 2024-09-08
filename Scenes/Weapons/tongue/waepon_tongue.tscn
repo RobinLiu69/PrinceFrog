@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwlo7cjjo4pla"]
 
-[ext_resource type="Script" path="res://Scripts/Weapons/range_weapon.gd" id="1_27dsv"]
+[ext_resource type="Script" path="res://Scripts/Weapons/ranged_weapon.gd" id="1_27dsv"]
 [ext_resource type="PackedScene" uid="uid://3nngb3oqocel" path="res://Scenes/Weapons/tongue/tongue.tscn" id="2_t1rqd"]
 
 [node name="TongueMaker" type="Marker2D"]

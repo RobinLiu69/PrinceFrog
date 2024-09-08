@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dw5b47keac54k"]
 
-[ext_resource type="Script" path="res://Scripts/Weapons/range_weapon.gd" id="1_oiwfy"]
+[ext_resource type="Script" path="res://Scripts/Weapons/ranged_weapon.gd" id="1_oiwfy"]
 [ext_resource type="PackedScene" uid="uid://c1mp2kos8cfht" path="res://Scenes/Weapons/kunai/kunai.tscn" id="2_ut2kc"]
 
 [node name="WeaponKunai" type="Marker2D"]
@@ -16,5 +16,6 @@ basic_damage = 20
 spawn_at_root_scene = true
 facing_the_target_rotation = true
 multiple_projectiles_active = true
-projectiles_amount = 3
-shooting_angle = 6.0
+projectiles_amount = 49
+angle_type = "maximum angle"
+original_shooting_angle = 15.0

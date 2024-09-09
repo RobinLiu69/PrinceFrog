@@ -73,7 +73,7 @@ func movement(delta: float) -> bool:
 		velocity.x = move_toward(velocity.x, 0, speed * 15 * delta)
 		velocity.y = move_toward(velocity.y, 0, speed * 15 * delta)
 		
-	EffectFuncs.effect_update(self)
+	EffectFunc.effect_update(self)
 	
 	if velocity.x > 0:
 		sprite.flip_h = true

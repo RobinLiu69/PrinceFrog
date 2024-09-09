@@ -67,6 +67,7 @@ func hit(body: CharacterBody2D = null) -> void:
 func _on_tongue_hit_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_hit") and body != from and not target_hit:
 		var total_damage = basic_damage
+		from.anim.play("open_mouth")
 		body.handle_hit(from, total_damage)
 		hit(body)
 	elif target_hit and body == from:

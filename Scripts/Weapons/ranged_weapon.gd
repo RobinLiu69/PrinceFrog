@@ -74,7 +74,6 @@ extends Marker2D
 
 @onready var cooldown_timer: Timer = Timer.new()
 
-const group_names: Array[String] = ["aggressive", "friendly", "neutral"]
 const size_correction: float = 1.75
 
 var obj_list: Array[Node] = []
@@ -111,42 +110,6 @@ func _ready() -> void:
 		for i in range(obj_start_count):
 			add_projectile()
 
-
-func find_the_nearest_target(target_list: Array[Node]) -> CharacterBody2D:
-	var nearest_target: CharacterBody2D = null
-	var distance: float = INF
-	
-	for target in target_list:
-		if owner.global_position.distance_squared_to(target.global_position) < distance:
-			nearest_target = target
-			distance = owner.global_position.distance_squared_to(target.global_position)
-	
-	return nearest_target if is_instance_valid(nearest_target) else null
-
-func find_the_farthest_target(target_list: Array[Node]) -> CharacterBody2D:
-	var farthest_target: CharacterBody2D = target_list.pick_random()
-	var distance: float = owner.global_position.distance_squared_to(farthest_target.global_position)
-	for target in target_list:
-		if owner.global_position.distance_squared_to(target.global_position) > distance:
-			farthest_target = target
-			distance = owner.global_position.distance_squared_to(target.global_position)
-	
-	return farthest_target if is_instance_valid(farthest_target) else null
-
-func find_random_target(target_list: Array[Node]) -> CharacterBody2D:
-	return target_list.pick_random()
-
-func get_target_list() -> Array[Node]:
-	var owner_group_names: Array[StringName] = owner.get_groups()
-	var target_list: Array[Node]
-	match target_type:
-		"not in my group":
-			for group_name in group_names.filter(func(name): return name not in owner_group_names):
-				target_list += get_tree().get_nodes_in_group(group_name)
-			return target_list
-		_:
-			target_list = get_tree().get_nodes_in_group(target_type)
-			return target_list
 	
 func attack(from: CharacterBody2D, damage_info: Array = [0]) -> float:
 	if not in_cooldown and projectile_scene and auto_spawn:
@@ -190,15 +153,15 @@ func add_projectile() -> void:
 
 func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) -> CharacterBody2D:
 	var instance: CharacterBody2D = projectile_scene.instantiate()
-	var target_list: Array[Node] = get_target_list()
+	var target_list: Array[Node] = AttackFunc.get_target_list(owner, target_type)
 	var targets: Array[Node] = [null]
 	match attack_type:
 		"nearest":
-			targets = [find_the_nearest_target(target_list)]
+			targets = [AttackFunc.find_the_nearest_target(owner, target_list)]
 		"farthest":
-			targets = [find_the_farthest_target(target_list)]
+			targets = [AttackFunc.find_the_farthest_target(owner, target_list)]
 		"random":
-			targets = [find_random_target(target_list)]
+			targets = [AttackFunc.find_random_target(target_list)]
 		"all":
 			targets = target_list
 	instance.from = from
@@ -218,7 +181,7 @@ func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) 
 			look_at(targets[0].global_position)
 			instance.rotation = rotation
 		else:
-			look_at(find_the_nearest_target(target_list).global_position)
+			look_at(AttackFunc.find_the_nearest_target(owner, target_list).global_position)
 			instance.rotation = rotation
 	if area_active:
 		instance.area_radius = area_radius

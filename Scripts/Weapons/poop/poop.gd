@@ -8,7 +8,7 @@ var speed: float
 var slowness_time: float 
 var slowness_level: float
 var existing_time: float
-var from: CharacterBody2D = null
+var source: CharacterBody2D = null
 var targets: Array = []
 var maker: Marker2D = null
 
@@ -24,7 +24,7 @@ func _process(delta):
 	
 func hit(body: CharacterBody2D) -> void:
 	var poop_area: CharacterBody2D = poop_area_scene.instantiate()
-	poop_area.from = from
+	poop_area.source = source
 	poop_area.slowness_time = slowness_time
 	poop_area.slowness_level = slowness_level
 	poop_area.scale = scale
@@ -34,7 +34,7 @@ func hit(body: CharacterBody2D) -> void:
 
 	
 func _on_poop_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body != from:
+	if body.has_method("handle_hit") and body != source:
 		hit(body)
 
 func _on_timer_timeout() -> void:

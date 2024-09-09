@@ -8,7 +8,7 @@ var basic_damage: int
 var speed: int
 var radius: float
 var existing_time: float
-var from: CharacterBody2D = null
+var source: CharacterBody2D = null
 var maker: Marker2D = null
 var targets: Array[Node] = []
 var target: CharacterBody2D
@@ -39,10 +39,10 @@ func movement(delta: float) -> bool:
 		else:
 			hit()
 	elif target_hit:
-		look_at(from.position)
+		look_at(source.position)
 		rotate(PI)
 		#if not pulled: pull_target()
-		velocity = global_position.direction_to(from.global_position) * speed * 2.5
+		velocity = global_position.direction_to(source.global_position) * speed * 2.5
 		return true
 		
 	return false
@@ -57,7 +57,7 @@ func hit(body: CharacterBody2D = null) -> void:
 	
 #func pull_target() -> bool:
 	#if is_instance_valid(target):
-		#if from.global_position.distance_squared_to(target.global_position) > (from.size * radius) ** 2:
+		#if source.global_position.distance_squared_to(target.global_position) > (source.size * radius) ** 2:
 			#target.global_position = global_position
 			#return true
 		#else:
@@ -65,11 +65,11 @@ func hit(body: CharacterBody2D = null) -> void:
 	#return false	
 	
 func _on_tongue_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body != from and not target_hit:
+	if body.has_method("handle_hit") and body != source and not target_hit:
 		var total_damage = basic_damage
-		from.anim.play("open_mouth")
-		body.handle_hit(from, total_damage)
+		source.anim.play("open_mouth")
+		body.handle_hit(source, total_damage)
 		hit(body)
-	elif target_hit and body == from:
-		from.anim.play("RESET")
+	elif target_hit and body == source:
+		source.anim.play("RESET")
 		queue_free()

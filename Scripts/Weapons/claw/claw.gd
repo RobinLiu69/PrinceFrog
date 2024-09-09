@@ -6,7 +6,7 @@ extends CharacterBody2D
 @onready var enemy_list: Array[Node] = get_tree().get_nodes_in_group("aggressive")
 @onready var timer: Timer = $Timer
 
-var attack_from: CharacterBody2D = null
+var attack_source: CharacterBody2D = null
 var in_cooldown: bool = false
 
 
@@ -24,8 +24,8 @@ func find_nearst_enemy() -> CharacterBody2D:
 	return nearst_enemy if nearst_enemy else null
 	
 
-func attack(from: CharacterBody2D, damage_info: Array = [0]) -> bool:
-	attack_from = from
+func attack(source: CharacterBody2D, damage_info: Array = [0]) -> bool:
+	attack_source = source
 	if not in_cooldown:
 		in_cooldown = true
 		timer.set_wait_time(cooldown)
@@ -42,9 +42,9 @@ func _process(delta):
 	enemy_list = get_tree().get_nodes_in_group("aggressive")
 
 func _on_claw_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and attack_from:
+	if body.has_method("handle_hit") and attack_source:
 		var total_damage: int = basic_damage
-		body.handle_hit(attack_from, total_damage)
+		body.handle_hit(attack_source, total_damage)
 
 func _on_timer_timeout() -> void:
 	in_cooldown = false

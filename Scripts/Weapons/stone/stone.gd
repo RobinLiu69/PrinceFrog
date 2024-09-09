@@ -8,7 +8,7 @@ var speed: float
 var existing_time: float
 var stun_time: float
 var maker: Marker2D = null
-var from: CharacterBody2D = null
+var source: CharacterBody2D = null
 var targets: Array[Node] = []
 
 func _ready():
@@ -48,7 +48,7 @@ func stun():
 func _on_stone_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_hit") and body in targets:
 		var total_damage = basic_damage
-		body.handle_hit(from, total_damage)
+		body.handle_hit(source, total_damage)
 		EffectFunc.slowness(body, 0.5, 5)
 		hit(body)
 

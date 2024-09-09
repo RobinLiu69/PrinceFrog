@@ -74,7 +74,7 @@ extends Marker2D
 
 @onready var cooldown_timer: Timer = Timer.new()
 
-const size_correction: float = 1.75
+const SIZE_CORRECTION: float = 1.75
 
 var obj_list: Array[Node] = []
 var obj_count: int = 0
@@ -86,7 +86,7 @@ var shooting_angle: float = 0.0
 func _ready() -> void:
 	assert(projectile_scene, " Not a valid projectile scene")
 	var test_projectile: CharacterBody2D = projectile_scene.instantiate()
-	assert("from" in test_projectile, test_projectile.name+" don't have the required variable <from>")
+	assert("source" in test_projectile, test_projectile.name+" don't have the required variable <source>")
 	assert("maker" in test_projectile, test_projectile.name+" don't have the required variable <maker>")
 	assert("basic_damage" in test_projectile, test_projectile.name+" don't have the required variable <basic_damage>")
 	assert("speed" in test_projectile, test_projectile.name+" don't have the required variable <speed>")
@@ -105,13 +105,13 @@ func _ready() -> void:
 	
 	cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
 	
-	radius *= size_correction
+	radius *= SIZE_CORRECTION
 	if satellite_active:
 		for i in range(obj_start_count):
 			add_projectile()
 
 	
-func attack(from: CharacterBody2D, damage_info: Array = [0]) -> float:
+func attack(source: CharacterBody2D, damage_info: Array = [0]) -> float:
 	if not in_cooldown and projectile_scene and auto_spawn:
 		in_cooldown = true
 		if cooldown > 0:
@@ -123,12 +123,16 @@ func attack(from: CharacterBody2D, damage_info: Array = [0]) -> float:
 			elif angle_type == "angle between":
 				shooting_angle = original_shooting_angle
 			for i in range(projectiles_amount):
-				adjust_projectiles_angle(spawn_projectile(from), i)
+				adjust_projectiles_angle(spawn_projectile(source), i)
 		else:
-			spawn_projectile(from)
+			spawn_projectile(source)
 	return false
 
 func get_cooldown_ratio() -> float:
+	return snapped(cooldown_timer.get_wait_time()/cooldown, 2)
+
+
+func reduce_cooldown(percentage: int, amount: int = 0) -> float:
 	return snapped(cooldown_timer.get_wait_time()/cooldown, 2)
 
 func adjust_projectiles_angle(projectile: CharacterBody2D, i: int) -> void:
@@ -151,7 +155,7 @@ func add_projectile() -> void:
 		var obj = spawn_projectile(owner)
 		obj_list.append(obj)
 
-func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) -> CharacterBody2D:
+func spawn_projectile(source: CharacterBody2D, set_position: Vector2 = Vector2()) -> CharacterBody2D:
 	var instance: CharacterBody2D = projectile_scene.instantiate()
 	var target_list: Array[Node] = AttackFunc.get_target_list(owner, target_type)
 	var targets: Array[Node] = [null]
@@ -164,7 +168,7 @@ func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) 
 			targets = [AttackFunc.find_random_target(target_list)]
 		"all":
 			targets = target_list
-	instance.from = from
+	instance.source = source
 	instance.basic_damage = basic_damage
 	instance.speed = speed
 	instance.targets = targets

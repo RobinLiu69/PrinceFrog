@@ -108,14 +108,14 @@ func get_target_list() -> Array[Node]:
 			target_list = get_tree().get_nodes_in_group(target_type)
 			return target_list
 	
-func attack(from: CharacterBody2D, damage_info: Array = [0]) -> bool:
+func attack(source: CharacterBody2D, damage_info: Array = [0]) -> bool:
 	if not in_cooldown and projectile_scene and auto_spawn:
 		in_cooldown = true
 		if cooldown > 0:
 			timer.set_wait_time(cooldown)
 			timer.start()
 		
-		spawn_projectile(from)
+		spawn_projectile(source)
 	return false
 
 func satellite_movment(delta: float) -> void:
@@ -131,7 +131,7 @@ func add_projectile() -> void:
 		var obj = spawn_projectile(owner)
 		obj_list.append(obj)
 
-func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) -> CharacterBody2D:
+func spawn_projectile(source: CharacterBody2D, set_position: Vector2 = Vector2()) -> CharacterBody2D:
 	var instance: CharacterBody2D = projectile_scene.instantiate()
 	var target_list: Array[Node] = get_target_list()
 	var targets: Array[Node] = [null]
@@ -144,7 +144,7 @@ func spawn_projectile(from: CharacterBody2D, set_position: Vector2 = Vector2()) 
 			targets = [find_random_target(target_list)]
 		"all":
 			targets = target_list
-	instance.from = from
+	instance.source = source
 	instance.basic_damage = basic_damage
 	instance.speed = speed
 	instance.targets = targets

@@ -16,7 +16,8 @@ signal health_changed
 var player: CharacterBody2D = null
 
 
-
+var enemy_type: String = "minion" # minion/boss/elite
+var current_element: Dictionary = {}
 var slowness_record: Dictionary = {}
 
 
@@ -27,6 +28,8 @@ func _process(delta):
 	enemy_list = get_tree().get_nodes_in_group("aggressive")
 	movement(delta)
 
+	EffectFunc.effect_update(self)
+	
 	move_and_slide()
 
 func _on_detection_area_body_entered(body):
@@ -60,7 +63,13 @@ func handle_hit(attacker: CharacterBody2D, damage: int) -> bool:
 		queue_free()
 		print(sprite.name +" dead")
 	return true
-	
+
+func take_damge(attacker: CharacterBody2D, value: int) -> void:
+	current_health = max(0, current_health - value)
+
+func take_heal(source: CharacterBody2D, value: int) -> void:
+	current_health = min(max_health, current_health + value)
+
 func alive() -> bool:
 	return current_health > 0
 
@@ -73,7 +82,6 @@ func movement(delta: float) -> bool:
 		velocity.x = move_toward(velocity.x, 0, speed * 15 * delta)
 		velocity.y = move_toward(velocity.y, 0, speed * 15 * delta)
 		
-	EffectFunc.effect_update(self)
 	
 	if velocity.x > 0:
 		sprite.flip_h = true

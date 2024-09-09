@@ -5,7 +5,7 @@ extends CharacterBody2D
 var slowness_time: float 
 var slowness_level: float
 var existing_time: float = 5
-var from: CharacterBody2D = null
+var source: CharacterBody2D = null
 var targets: Array = []
 
 var in_slow_targets: Dictionary = {}
@@ -23,12 +23,12 @@ func hit(body: CharacterBody2D) -> void:
 		in_slow_targets[body].start()
 	
 func _on_poop_area_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body != from:
+	if body.has_method("handle_hit") and body != source:
 		hit(body)
 
 
 func _on_poop_area_hit_body_exited(body: Node2D) -> void:
-	if body != from:
+	if body != source:
 		hit(body)
 
 func _on_timer_timeout() -> void:

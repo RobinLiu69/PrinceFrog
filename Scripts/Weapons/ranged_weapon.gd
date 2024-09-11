@@ -68,7 +68,7 @@ extends Marker2D
 @export var stun_time: float
 @export_group("Slow", "slowness")
 @export var slowness_active: bool = false
-@export_range(0, 1, 0.01) var slowness_level: float
+@export_range(0, 100, 1) var slowness_level: int
 ## If enter a nagative number, it will become INF.
 @export var slowness_time: float
 

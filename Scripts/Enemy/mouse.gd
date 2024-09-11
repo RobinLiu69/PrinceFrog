@@ -3,7 +3,7 @@ extends CharacterBody2D
 signal health_changed
 
 @export var speed: float = 50.0
-@export var max_health: int = 100
+@export var max_health: int = 1000
 @export var size: float = 70.0
 @export var slowness_resistance: float = 0
 @export var stun_resistance: float = 0
@@ -16,10 +16,18 @@ signal health_changed
 var player: CharacterBody2D = null
 
 
-var enemy_type: String = "minion" # minion/boss/elite
-var current_element: Dictionary = {}
+var enemy_type: String = "minion" # minion/boss/elite/frog
+var current_elements: Dictionary = {}
 var slowness_record: Dictionary = {}
+var healing_efficiency: Dictionary = {"basic": 100}
 
+var physical_defence: int = 0
+var elements_defence: int = 0
+var grass_defence: int = 0
+var fire_defence: int = 0
+var water_defence: int = 0
+var poison_defence: int = 0
+var electric_defence: int = 0
 
 func _ready():
 	health_changed.emit()
@@ -56,19 +64,29 @@ func got_stun() -> bool:
 	return true
 
 
-func handle_hit(attacker: CharacterBody2D, damage: int) -> bool:
-	current_health -= damage
+#func handle_hit(attacker: CharacterBody2D, damage: int) -> bool:
+	#current_health -= damage
+	#health_changed.emit()
+	#if not alive():
+		#queue_free()
+		#print(sprite.name +" dead")
+	#return true
+
+func take_damage(attacker: CharacterBody2D, value: int) -> float:
+	value = current_health if current_health - value <= 0 else value
+	current_health -= value
 	health_changed.emit()
 	if not alive():
 		queue_free()
 		print(sprite.name +" dead")
-	return true
+	return value
 
-func take_damge(attacker: CharacterBody2D, value: int) -> void:
-	current_health = max(0, current_health - value)
-
-func take_heal(source: CharacterBody2D, value: int) -> void:
-	current_health = min(max_health, current_health + value)
+func take_heal(source: CharacterBody2D, value: int) -> float:
+	for i in healing_efficiency.keys():
+		value *= healing_efficiency[i]/100
+	value = max_health - current_health if current_health + value >= max_health else value
+	current_health -= value
+	return value
 
 func alive() -> bool:
 	return current_health > 0

@@ -5,7 +5,7 @@
 
 [node name="TongueMaker" type="Marker2D"]
 script = ExtResource("1_27dsv")
-cooldown = 5.0
+cooldown = 1.0
 speed = 500.0
 projectile_scene = ExtResource("2_t1rqd")
 auto_spawn = true
@@ -15,9 +15,3 @@ attack_type = "nearest"
 physical_damage = 0.4
 facing_the_target_rotation = true
 radius = 3.0
-multiple_projectiles_active = true
-projectiles_amount = 5
-shooting_angle = 40.0
-slowness_active = null
-slowness_level = null
-slowness_time = null

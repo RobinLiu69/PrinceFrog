@@ -6,4 +6,4 @@ func _process(delta):
 	global_rotation = 0
 	clear_points()
 	add_point(get_parent().global_position)
-	add_point(get_parent().from.global_position)
+	add_point(get_parent().source.global_position)

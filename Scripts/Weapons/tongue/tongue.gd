@@ -56,7 +56,7 @@ func hit(body: CharacterBody2D = null) -> void:
 	target_hit = true
 	
 #func pull_target() -> bool:
-	#if is_instance_valid(target):
+	#if is_instance_valid(target)
 		#if source.global_position.distance_squared_to(target.global_position) > (source.size * radius) ** 2:
 			#target.global_position = global_position
 			#return true
@@ -65,10 +65,12 @@ func hit(body: CharacterBody2D = null) -> void:
 	#return false	
 	
 func _on_tongue_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body != source and not target_hit:
+	if body != source and not target_hit: #body.has_method("handle_hit") and 
 		var total_damage = basic_damage
 		source.anim.play("open_mouth")
-		body.handle_hit(source, total_damage)
+		#body.handle_hit(source, total_damage)
+		AttackFunc.damage(source, body, 5, 0, 0, 0, 0, 0, "poison", 2)
+		AttackFunc.damage(source, body, 5, 0, 0, 0, 0, 0, "fire", 2)
 		hit(body)
 	elif target_hit and body == source:
 		source.anim.play("RESET")

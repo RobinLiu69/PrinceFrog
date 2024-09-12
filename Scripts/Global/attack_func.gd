@@ -73,14 +73,29 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 	if is_instance_valid(victim) and is_instance_valid(attacker):
 		assert(BASIC_ARRAY.filter(func(attr): return attr in victim), " don't have the required variables for all kind of defences")
 		var total_damage_amount: float = 0
-		total_damage_amount += physical_damage * (1 - (victim.physical_defence/(victim.physical_defence + 100)))
-		total_damage_amount += max(0, grass_damage * (1 - victim.elements_defence/100.0) - victim.grass_defence)
-		total_damage_amount += max(0, fire_damage * (1 - victim.elements_defence/100.0) - victim.fire_defence)
-		total_damage_amount += max(0, water_damage * (1 - victim.elements_defence/100.0) - victim.water_defence)
-		total_damage_amount += max(0, poison_damage * (1 - victim.elements_defence/100.0) - victim.poison_defence)
-		total_damage_amount += max(0, electric_damage * (1 - victim.elements_defence/100.0) - victim.electric_defence)
-		if poison_damage:
-			print("Damage: ", total_damage_amount)
+		var defences: Array[float] = []
+		for defence in victim.defences:
+			var values: float = defence["basic"]
+			for key in defence.keys():
+				if key == "basic": continue
+				else: values *= defence[key]/100.0
+			defences.append(floor(values))
+		var physical_defence: int = defences[0]
+		var elements_defence: int = defences[1]
+		var grass_defence: int = defences[2]
+		var fire_defence: int = defences[3]
+		var water_defence: int = defences[4]
+		var poison_defence: int = defences[5]
+		var electric_defence: int = defences[6]
+		print(defences)
+		total_damage_amount += physical_damage * (1 - (physical_defence/(physical_defence + 100)))
+		total_damage_amount += max(0, grass_damage * (1 - elements_defence/100.0) - grass_defence)
+		total_damage_amount += max(0, fire_damage * (1 - elements_defence/100.0) - fire_defence)
+		total_damage_amount += max(0, water_damage * (1 - elements_defence/100.0) - water_defence)
+		total_damage_amount += max(0, poison_damage * (1 - elements_defence/100.0) -poison_defence)
+		total_damage_amount += max(0, electric_damage * (1 - elements_defence/100.0) - electric_defence)
+		
+		print("Damage: ", total_damage_amount)
 		EffectFunc.apply_element_effect_on_attack(attacker, victim, applied_element, elemental_stack_count, victim.take_damage(attacker, round(total_damage_amount)))
 		return true
 	return false

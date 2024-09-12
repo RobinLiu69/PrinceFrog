@@ -119,7 +119,7 @@ func elements_status_display(body: CharacterBody2D) -> void:
 				"electric":
 					element_icon.texture = ELECTRIC_ICON
 			effect_display.add_child(element_icon)
-			element_icon.scale = Vector2(0.7, 0.7)
+			element_icon.scale = Vector2(0.3, 0.3)
 
 		elif not body.current_elements.has(element_name) or len(elements_in_display) > body.current_elements[element_name]:
 			if elements_in_display:
@@ -140,6 +140,8 @@ func apply_element_effect_on_attack(attacker: CharacterBody2D, victim: Character
 	if "water" in current_element_names:
 		victim.slowness_record["_water"] = 100 - 10 * victim.current_elements["water"]
 	if "poison" in current_element_names:
+		victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
+		victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 		add_poison_timer(attacker, victim)
 	if "electric" in current_element_names:
 		pass
@@ -171,6 +173,7 @@ func switch_element(attacker: CharacterBody2D, victim: CharacterBody2D, applied_
 					"electric":
 						if not victim.has_node("ElectricTimer"):
 							trigger_electric_breakthrough(attacker, victim)
+				reset_element_timer(victim)
 		else:
 			for element_name in current_element_names:
 				match element_name:
@@ -241,8 +244,11 @@ func _on_element_timer_timeout(victim: CharacterBody2D, timer: Timer) -> void:
 						victim.slowness_record["_water"] = 100 - 10 * victim.current_elements["water"]
 				"poison":
 					if victim.current_elements[element_name] <= 0:
-						pass
-						#victim.healing_efficiency.erase("_poison")
+						victim.physical_defence.erase("_poison")
+						victim.elements_defence.erase("_poison")
+					else:
+						victim.physical_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
+						victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 			if victim.current_elements[element_name] <= 0:
 				victim.current_elements.erase(element_name)
 		timer.set_wait_time(1)

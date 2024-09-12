@@ -110,7 +110,6 @@ scale = Vector2(4, 4)
 [node name="TongueMaker" parent="Weapons" instance=ExtResource("5_ag7wc")]
 
 [node name="WeaponStone" parent="Weapons" instance=ExtResource("5_aptuc")]
-slowness_level = 0
 
 [node name="CharacterCollision" type="CollisionShape2D" parent="."]
 z_index = 10

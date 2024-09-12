@@ -12,11 +12,12 @@ signal health_changed
 @onready var sprite: AnimatedSprite2D = $Mouse
 @onready var current_health: int = max_health
 @onready var enemy_list: Array[Node] = get_tree().get_nodes_in_group("aggressive")
-@onready var player_chase = false
+@onready var player_chase: bool = false
+@onready var damage_numbers_origin: Node2D = $DamageNumbersOrigin
 var player: CharacterBody2D = null
 
 
-var enemy_type: String = "minion" # minion/boss/elite/frog
+var enemy_type: String = "boss" # minion/boss/elite/frog
 var current_elements: Dictionary = {}
 var slowness_record: Dictionary = {}
 var healing_efficiency: Dictionary = {"basic": 100}

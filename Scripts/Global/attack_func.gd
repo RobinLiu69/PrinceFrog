@@ -64,7 +64,8 @@ func real_damage(attacker: CharacterBody2D, victim:CharacterBody2D, direct_amoun
 	var total_damage_amount: float = 0
 	total_damage_amount += direct_amount if direct_amount > 0 else 0
 	total_damage_amount += victim.max_health * max_health_percentage_amount/100.0 if max_health_percentage_amount > 0 else 0
-	victim.take_damage(attacker, round(total_damage_amount))
+	var damage_taken: int = victim.take_damage(attacker, round(total_damage_amount))
+	ParticleFunc.display_number(damage_taken, victim.damage_numbers_origin.global_position)
 	return total_damage_amount
 
 func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage: float = 0, grass_damage: float = 0, \
@@ -87,7 +88,7 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 		var water_defence: int = defences[4]
 		var poison_defence: int = defences[5]
 		var electric_defence: int = defences[6]
-		print(defences)
+		print(victim.defences)
 		total_damage_amount += physical_damage * (1 - (physical_defence/(physical_defence + 100)))
 		total_damage_amount += max(0, grass_damage * (1 - elements_defence/100.0) - grass_defence)
 		total_damage_amount += max(0, fire_damage * (1 - elements_defence/100.0) - fire_defence)
@@ -95,7 +96,21 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 		total_damage_amount += max(0, poison_damage * (1 - elements_defence/100.0) -poison_defence)
 		total_damage_amount += max(0, electric_damage * (1 - elements_defence/100.0) - electric_defence)
 		
-		print("Damage: ", total_damage_amount)
-		EffectFunc.apply_element_effect_on_attack(attacker, victim, applied_element, elemental_stack_count, victim.take_damage(attacker, round(total_damage_amount)))
+		var element_type: String = "null"
+		
+		if grass_damage:
+			element_type = "grass"
+		elif fire_damage:
+			element_type = "fire"
+		elif water_damage:
+			element_type = "water"
+		elif poison_damage:
+			element_type = "poison"
+		elif electric_damage:
+			element_type = "electric"
+		
+		var damage_taken: int = victim.take_damage(attacker, round(total_damage_amount))
+		EffectFunc.apply_element_effect_on_attack(attacker, victim, applied_element, elemental_stack_count, damage_taken)
+		ParticleFunc.display_number(damage_taken, victim.damage_numbers_origin.global_position, element_type)
 		return true
 	return false

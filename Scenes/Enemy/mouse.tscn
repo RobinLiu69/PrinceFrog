@@ -139,5 +139,8 @@ libraries = {
 [node name="EffectDisplay" type="Marker2D" parent="."]
 position = Vector2(9, 11)
 
+[node name="DamageNumbersOrigin" type="Node2D" parent="."]
+position = Vector2(0.25, -16.25)
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

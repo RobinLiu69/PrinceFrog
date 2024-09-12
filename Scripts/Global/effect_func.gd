@@ -140,7 +140,7 @@ func apply_element_effect_on_attack(attacker: CharacterBody2D, victim: Character
 	if "water" in current_element_names:
 		victim.slowness_record["_water"] = 100 - 10 * victim.current_elements["water"]
 	if "poison" in current_element_names:
-		victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
+		victim.physical_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 		victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 		add_poison_timer(attacker, victim)
 	if "electric" in current_element_names:
@@ -284,15 +284,15 @@ func _on_fire_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D, 
 		timer.queue_free()
 	
 func add_poison_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
-	var fire_timer: Timer = null
+	var poison_timer: Timer = null
 	if not victim.has_node("_PoisonTimer"):
-		fire_timer = Timer.new()
-		fire_timer.name = "_PoisonTimer"
-		victim.add_child(fire_timer)
-		fire_timer.stop()
-		fire_timer.set_wait_time(1)
-		fire_timer.timeout.connect(_on_poison_timer_timeout.bind(attacker, victim, fire_timer))
-		fire_timer.start()
+		poison_timer = Timer.new()
+		poison_timer.name = "_PoisonTimer"
+		victim.add_child(poison_timer)
+		poison_timer.stop()
+		poison_timer.set_wait_time(1)
+		poison_timer.timeout.connect(_on_poison_timer_timeout.bind(attacker, victim, poison_timer))
+		poison_timer.start()
 	
 func _on_poison_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D, timer: Timer) -> void:
 	if "poison" in victim.current_elements:
@@ -300,6 +300,25 @@ func _on_poison_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D
 	else:
 		timer.queue_free()
 
+func add_poison_breakthrough_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
+	var poison_timer: Timer = null
+	if not victim.has_node("_PoisonBreakthroughTimer"):
+		poison_timer = Timer.new()
+		poison_timer.name = "_PoisonBreakthroughTimer"
+		victim.add_child(poison_timer)
+		poison_timer.stop()
+		print("start")
+		victim.physical_defence["_poison_breakthrough"] = 100 - 10 * get_damage_multiplier(victim.enemy_type)
+		victim.elements_defence["_poison_breakthrough"] = 100 - 10 * get_damage_multiplier(victim.enemy_type)
+		poison_timer.set_wait_time(0.75 * get_damage_multiplier(victim.enemy_type))
+		poison_timer.timeout.connect(_on_poison_breakthrough_timer_timeout.bind(attacker, victim, poison_timer))
+		poison_timer.start()
+	
+func _on_poison_breakthrough_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D, timer: Timer) -> void:
+	victim.physical_defence.erase("_poison_breakthrough")
+	victim.elements_defence.erase("_poison_breakthrough")
+	print("finish")
+	timer.queue_free()
 
 ## ALERT: haven't finished
 func trigger_grass_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
@@ -319,6 +338,7 @@ func trigger_water_breakthrough(attacker: CharacterBody2D, victim: CharacterBody
 ## ALERT: haven't finished
 func trigger_poison_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, "_poison")
+	add_poison_breakthrough_timer(attacker, victim)											
 	add_breakthrough_timer(victim, "Poison")
 
 ## ALERT: haven't finished

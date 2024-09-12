@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 EffectFunc="*res://Scripts/Global/effect_func.gd"
 AttackFunc="*res://Scripts/Global/attack_func.gd"
+ParticleFunc="*res://Scripts/Global/particle_func.gd"
 
 [global_group]
 

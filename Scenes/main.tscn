@@ -13,14 +13,14 @@ position = Vector2(85, 901)
 position = Vector2(570, -9)
 
 [node name="Mouse2" parent="." instance=ExtResource("2_weea0")]
-position = Vector2(1973, 39)
+position = Vector2(2104, -140)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1106, 406)
 zoom = Vector2(0.5, 0.5)
 
 [node name="Mouse3" parent="." instance=ExtResource("2_weea0")]
-position = Vector2(2171, 1043)
+position = Vector2(2038, 941)
 
 [node name="CanvasLayer" parent="." instance=ExtResource("3_r0f0m")]
 visible = false

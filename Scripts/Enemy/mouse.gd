@@ -3,7 +3,7 @@ extends CharacterBody2D
 signal health_changed
 
 @export var speed: float = 50.0
-@export var max_health: int = 200
+@export var max_health: int = 1000
 @export var size: float = 70.0
 @export var slowness_resistance: float = 0
 @export var stun_resistance: float = 0
@@ -23,8 +23,8 @@ var slowness_record: Dictionary = {}
 var healing_efficiency: Dictionary = {"basic": 100}
 
 
-var physical_defence: Dictionary = {"basic": 10}
-var elements_defence: Dictionary = {"basic": 50}
+var physical_defence: Dictionary = {"basic": 40}
+var elements_defence: Dictionary = {"basic": 0}
 var grass_defence: Dictionary = {"basic": 0}
 var fire_defence: Dictionary = {"basic": 0}
 var water_defence: Dictionary = {"basic": 0}
@@ -53,18 +53,6 @@ func _on_detection_area_body_exited(body):
 		player = null
 		player_chase = false
 
-		
-func remove_stun() -> bool:
-	print("stun end")
-	anim.play("RESET")
-	return true
-
-func got_stun() -> bool:
-	print("stun")
-	anim.play("stun")
-	player = null
-	player_chase = false
-	return true
 
 
 #func handle_hit(attacker: CharacterBody2D, damage: int) -> bool:
@@ -79,7 +67,7 @@ func take_damage(attacker: CharacterBody2D, value: int) -> float:
 	value = current_health if current_health - value <= 0 else value
 	current_health -= value
 	health_changed.emit()
-	if not alive():
+	if not alive() and self:
 		queue_free()
 		print(sprite.name +" dead")
 	return value
@@ -95,11 +83,12 @@ func alive() -> bool:
 	return current_health > 0
 
 func movement(delta: float) -> bool:
-	if player_chase:
+	if player_chase and player:
 		velocity = position.direction_to(player.position) * speed * 2.5
 
 		anim.play("walk")
 	else:
+		player_chase = false
 		velocity.x = move_toward(velocity.x, 0, speed * 15 * delta)
 		velocity.y = move_toward(velocity.y, 0, speed * 15 * delta)
 		

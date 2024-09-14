@@ -17,14 +17,11 @@ func find_the_nearest_targets(body: CharacterBody2D, target_list: Array[Node], m
 	var valid_targets = []
 	for target in target_list:
 		if is_instance_valid(target):
-			var distance = body.global_position.distance_squared_to(target.global_position)
-			valid_targets.append([distance, target])
+			valid_targets.append([body.global_position.distance_squared_to(target.global_position), target])
 	valid_targets.sort()
-
 	var nearest_targets: Array[Node] = []
-	for i in range(min(max_amount, valid_targets.size())):
+	for i in range(min(max_amount, len(valid_targets))):
 		nearest_targets.append(valid_targets[i][1])
-
 	return nearest_targets
 
 func find_the_farthest_target(body: CharacterBody2D, target_list: Array[Node]) -> CharacterBody2D:
@@ -92,7 +89,8 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 		var water_defence: int = defences[4]
 		var poison_defence: int = defences[5]
 		var electric_defence: int = defences[6]
-		print(victim.defences)
+		
+		
 		total_damage_amount += physical_damage * (1 - (physical_defence/(physical_defence + 100)))
 		total_damage_amount += max(0, element_calculate(grass_damage, elements_defence) - grass_defence)
 		total_damage_amount += max(0, element_calculate(fire_damage, elements_defence) - fire_defence)
@@ -121,4 +119,4 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 
 
 func element_calculate(damage: int, element_defence: int) -> float:
-	return damage * (damage / (damage + element_defence / 1.0))
+	return damage * (1 - (element_defence / (250.0 + element_defence)))

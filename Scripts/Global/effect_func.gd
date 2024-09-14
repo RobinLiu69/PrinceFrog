@@ -16,7 +16,7 @@ func get_damage_multiplier(enemy_type: String) -> int:
 		"boss":
 			return 1
 		"elite":
-			return 1
+			return 2
 		_:
 			return 1
 
@@ -25,30 +25,42 @@ func effect_update(body: CharacterBody2D) -> void:
 	effect_display_update(body)
 
 func effect_display_update(body: CharacterBody2D) -> void:
-	var effect_display: Marker2D = body.get_node("EffectDisplay")
-	var effect_display_children: Array[Node] = effect_display.get_children()
-	for i in range(len(effect_display_children)):
-		effect_display_children[i].position = Vector2.RIGHT* (body.size/100.0 * 7.5 * i)
+	for display in ["EffectDisplay", "ElementDisplay-1", "ElementDisplay-2"]:
+		var effect_display: Marker2D = body.get_node(display)
+		var effect_display_children: Array[Node] = effect_display.get_children()
+		for i in range(len(effect_display_children)):
+			effect_display_children[i].position = Vector2.RIGHT* (body.size/100.0 * 7.5 * i)
+
 	slowness_status_display(body)
 	elements_status_display(body)
 
 
 
-# Called when the node enters the scene tree for the first time.
 func stun(body: CharacterBody2D, duration: float = 0) -> bool:
 	if not body.has_node("StunTimer"):
 		var stun_timer = Timer.new()
 		stun_timer.name = "StunTimer"
-		#stun_timer.connect(stun_end)
+		stun_timer.timeout.connect(stun_end.bind(body, stun_timer))
+		stun_timer.set_wait_time(duration)
+		body.add_child(stun_timer)
+		body.player_chase = false
+		stun_timer.start()
 		return true
 	else:
-		if body.stun_timer.time_left() < duration:
-			body.stun_timer.stop()
-			body.stun_timer.set_wait_time(duration)
-			body.stun_timer.start()
+		var stun_timer: Timer = body.get_node("StunTimer")
+		if stun_timer.time_left < duration:
+			stun_timer.stop()
+			body.player_chase = false
+			stun_timer.set_wait_time(duration)
+			stun_timer.start()
 			return true
 		else:
 			return false
+
+func stun_end(body: CharacterBody2D, timer: Timer) -> void:
+	body.player_chase = true
+	timer.queue_free()
+	
 
 func slowness_update(body: CharacterBody2D) -> void:
 	for slowness_level in body.slowness_record.values():
@@ -99,30 +111,38 @@ func element_update() -> void:
 	pass
 
 func elements_status_display(body: CharacterBody2D) -> void:
-	var effect_display: Marker2D = body.get_node("EffectDisplay")
-	var effect_display_children: Array[Node] = effect_display.get_children()
-	for element_name in ELEMENTS:
-		var elements_in_display: Array[Node] = effect_display_children.filter(func(child): return child.name.split('-')[0].to_lower() in element_name)
-		if body.current_elements.has(element_name) and len(elements_in_display) < body.current_elements[element_name]:
-			var element_icon: Sprite2D = Sprite2D.new()
-			element_icon.name = element_name.to_upper() + "-" + str(element_icon.get_instance_id())
-			match element_name:
-				"grass":
-					element_icon.texture = GRASS_ICON
-				"fire":
-					element_icon.texture = FIRE_ICON
-				"water":
-					element_icon.texture = WATER_ICON
-				"poison":
-					element_icon.texture = POISON_ICON
-				"electric":
-					element_icon.texture = ELECTRIC_ICON
-			effect_display.add_child(element_icon)
-			element_icon.scale = Vector2(0.3, 0.3)
+	for display in ["ElementDisplay-1", "ElementDisplay-2"]:
+		var effect_display: Marker2D = body.get_node(display)
+		var effect_display_children: Array[Node] = effect_display.get_children()
+		for element_name in ELEMENTS:
+			var elements_in_display: Array[Node] = effect_display_children.filter(func(child): return child.name.split('-')[0].to_lower() in element_name)
+			if body.current_elements.has(element_name) and len(elements_in_display) < body.current_elements[element_name]:
+				var element_icon: Sprite2D = Sprite2D.new()
+				element_icon.name = element_name.to_upper() + "-" + str(element_icon.get_instance_id())
+				match element_name:
+					"grass":
+						if display == "ElementDisplay-2": continue
+						element_icon.texture = GRASS_ICON
+					"fire":
+						if display == "ElementDisplay-2": continue
+						element_icon.texture = FIRE_ICON
+					"water":
+						if display == "ElementDisplay-2": continue
+						element_icon.texture = WATER_ICON
+					"poison":
+						if display == "ElementDisplay-1": continue
+						element_icon.texture = POISON_ICON
+					"electric":
+						if display == "ElementDisplay-1": continue
+						element_icon.texture = ELECTRIC_ICON
+				effect_display.add_child(element_icon)
+				element_icon.scale = Vector2(0.3, 0.3)
 
-		elif not body.current_elements.has(element_name) or len(elements_in_display) > body.current_elements[element_name]:
-			if elements_in_display:
-				effect_display.remove_child(elements_in_display[-1])
+			elif not body.current_elements.has(element_name) or len(elements_in_display) > body.current_elements[element_name]:
+				if elements_in_display:
+					effect_display.remove_child(elements_in_display[-1])
+
+
 
 func apply_element_effect_on_attack(attacker: CharacterBody2D, victim: CharacterBody2D, applied_element: String, elemental_stack_count: int, damage_taken: float) -> void:
 	if applied_element in ["grass", "fire", "water", "poison", "electric"]:
@@ -143,17 +163,15 @@ func apply_element_effect_on_attack(attacker: CharacterBody2D, victim: Character
 		victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 		add_poison_timer(attacker, victim)
 	if "electric" in current_element_names:
-		normal_electric(attacker, victim)
-		
+		if applied_element == "_electric": pass
+		elif victim.current_elements["electric"] <= 5:
+			var target_list: Array[Node] = AttackFunc.get_target_list(attacker, "not in my group")
+			target_list.erase(victim)
+			for target in AttackFunc.find_the_nearest_targets(attacker, target_list, victim.current_elements["electric"]):
+				AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, target.max_health * 0.0025 * get_damage_multiplier(target.enemy_type), "_electric")
 
-		
-func normal_electric	(attacker: CharacterBody2D, victim: CharacterBody2D):
-		var target_list: Array[Node] = AttackFunc.get_target_list(attacker, "not in my group")
-		var targets = AttackFunc.find_the_nearest_targets(victim,target_list,victim.current_elements["electric"])
-		targets = targets.slice(1, targets.size())
-		for target in targets:
-			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, 0, "electric")	
-	
+
+
 
 func switch_element(attacker: CharacterBody2D, victim: CharacterBody2D, applied_element: String) -> void:
 	if victim.current_elements:
@@ -210,7 +228,7 @@ func switch_element(attacker: CharacterBody2D, victim: CharacterBody2D, applied_
 					"poison":
 						if applied_element in ["grass", "fire", "water"] and len(current_element_names) == 1:
 							victim.current_elements[applied_element] = 1
-					"electirc":
+					"electric":
 						if applied_element in ["grass", "fire", "water"] and len(current_element_names) == 1:
 							victim.current_elements[applied_element] = 1
 				#if applied_element 
@@ -219,7 +237,8 @@ func switch_element(attacker: CharacterBody2D, victim: CharacterBody2D, applied_
 	else:
 		victim.current_elements[applied_element] = 1
 		reset_element_timer(victim)
-		
+
+
 func reset_element_timer(victim: CharacterBody2D) -> void:
 	var element_timer: Timer = null
 	if victim.has_node("ElementTimer"):
@@ -228,11 +247,12 @@ func reset_element_timer(victim: CharacterBody2D) -> void:
 		element_timer = Timer.new()
 		element_timer.name = "ElementTimer"
 		victim.add_child(element_timer)
+		element_timer.timeout.connect(_on_element_timer_timeout.bind(victim, element_timer))
 	element_timer.one_shot = true
 	element_timer.stop()
 	element_timer.set_wait_time(3)
-	element_timer.timeout.connect(_on_element_timer_timeout.bind(victim, element_timer))
 	element_timer.start()
+
 
 func _on_element_timer_timeout(victim: CharacterBody2D, timer: Timer) -> void:
 	if not victim.current_elements.is_empty():
@@ -250,8 +270,8 @@ func _on_element_timer_timeout(victim: CharacterBody2D, timer: Timer) -> void:
 						victim.slowness_record["_water"] = 100 - 10 * victim.current_elements["water"]
 				"poison":
 					if victim.current_elements[element_name] <= 0:
-						victim.ence.erase("_poison")
-						victim.elements_defphysical_defence.erase("_poison")
+						victim.elements_defence.erase("_poison")
+						victim.physical_defence.erase("_poison")
 					else:
 						victim.physical_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 						victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
@@ -261,7 +281,8 @@ func _on_element_timer_timeout(victim: CharacterBody2D, timer: Timer) -> void:
 		timer.start()
 	else:
 		timer.queue_free()
-	
+
+
 func grass_reaction(attacker: CharacterBody2D, victim: CharacterBody2D, stack_level: int) -> void:
 	AttackFunc.heal(attacker, attacker, 0, 5 * stack_level)
 
@@ -271,6 +292,8 @@ func fire_reaction(attacker: CharacterBody2D, victim: CharacterBody2D, stack_lev
 ## ALERT: haven't finished
 func water_reaction(attacker: CharacterBody2D, victim: CharacterBody2D, stack_level: int) -> void:
 	AttackFunc.reduce_cooldown(attacker, 5 * stack_level)
+
+
 
 func add_fire_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	var fire_timer: Timer = null
@@ -288,7 +311,9 @@ func _on_fire_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D, 
 		AttackFunc.damage(attacker, victim, 0, 0, victim.max_health * 0.001 * get_damage_multiplier(victim.enemy_type) * victim.current_elements["fire"], 0, 0, 0)
 	else:
 		timer.queue_free()
-	
+
+
+
 func add_poison_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	var poison_timer: Timer = null
 	if not victim.has_node("_PoisonTimer"):
@@ -306,6 +331,8 @@ func _on_poison_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D
 	else:
 		timer.queue_free()
 
+
+
 func add_poison_breakthrough_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	var poison_timer: Timer = null
 	if not victim.has_node("_PoisonBreakthroughTimer"):
@@ -313,7 +340,6 @@ func add_poison_breakthrough_timer(attacker: CharacterBody2D, victim: CharacterB
 		poison_timer.name = "_PoisonBreakthroughTimer"
 		victim.add_child(poison_timer)
 		poison_timer.stop()
-		print("start")
 		victim.physical_defence["_poison_breakthrough"] = 100 - 10 * get_damage_multiplier(victim.enemy_type)
 		victim.elements_defence["_poison_breakthrough"] = 100 - 10 * get_damage_multiplier(victim.enemy_type)
 		poison_timer.set_wait_time(0.75 * get_damage_multiplier(victim.enemy_type))
@@ -323,10 +349,10 @@ func add_poison_breakthrough_timer(attacker: CharacterBody2D, victim: CharacterB
 func _on_poison_breakthrough_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D, timer: Timer) -> void:
 	victim.physical_defence.erase("_poison_breakthrough")
 	victim.elements_defence.erase("_poison_breakthrough")
-	print("finish")
 	timer.queue_free()
 
-## ALERT: haven't finished
+
+
 func trigger_grass_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, 0, 0, "_grass")
 	add_breakthrough_timer(victim, "Grass")
@@ -340,22 +366,28 @@ func trigger_fire_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2
 func trigger_water_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, "_water")
 	add_breakthrough_timer(victim, "Water")
+	stun(victim, 0.5 * get_damage_multiplier(victim.enemy_type))
 
-## ALERT: haven't finished
 func trigger_poison_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, "_poison")
-	add_poison_breakthrough_timer(attacker, victim)											
 	add_breakthrough_timer(victim, "Poison")
+	add_poison_breakthrough_timer(attacker, victim)
 
 ## ALERT: haven't finished
 func trigger_electric_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), "_electric")
 	var target_list: Array[Node] = AttackFunc.get_target_list(attacker, "not in my group")
-	var targets = AttackFunc.find_the_nearest_targets(victim,target_list,5)
-	targets = targets.slice(1, targets.size())
-	for target in targets:
-		AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, target.max_health * 0.0025 * get_damage_multiplier(target.enemy_type), "electric")	
+	target_list.erase(victim)
 	add_breakthrough_timer(victim, "Electric")
+	for target in AttackFunc.find_the_nearest_targets(victim, target_list, 5):
+		if len(victim.current_elements) > 1:
+			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, target.max_health * 0.0025 * get_damage_multiplier(target.enemy_type) , victim.current_elements.keys()[0], 1)
+			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, 0 , victim.current_elements.keys()[1], 1)
+			
+		else:
+			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, target.max_health * 0.0025 * get_damage_multiplier(target.enemy_type) , "electric", 1)
+
+
 
 func add_breakthrough_timer(body:CharacterBody2D, name:String) -> void:
 	var element_timer: Timer = null

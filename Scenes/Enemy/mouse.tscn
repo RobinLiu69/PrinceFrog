@@ -136,6 +136,12 @@ libraries = {
 
 [node name="Weapons" type="Node2D" parent="."]
 
+[node name="ElementDisplay-1" type="Marker2D" parent="."]
+position = Vector2(7.25, -13.25)
+
+[node name="ElementDisplay-2" type="Marker2D" parent="."]
+position = Vector2(10, -7.75)
+
 [node name="EffectDisplay" type="Marker2D" parent="."]
 position = Vector2(9, 11)
 

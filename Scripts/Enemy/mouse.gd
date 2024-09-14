@@ -3,7 +3,7 @@ extends CharacterBody2D
 signal health_changed
 
 @export var speed: float = 50.0
-@export var max_health: int = 500
+@export var max_health: int = 200
 @export var size: float = 70.0
 @export var slowness_resistance: float = 0
 @export var stun_resistance: float = 0
@@ -17,17 +17,17 @@ signal health_changed
 var player: CharacterBody2D = null
 
 
-var enemy_type: String = "boss" # minion/boss/elite/frog
+var enemy_type: String = "minion" # minion/boss/elite/frog
 var current_elements: Dictionary = {}
 var slowness_record: Dictionary = {}
 var healing_efficiency: Dictionary = {"basic": 100}
 
 
-var physical_defence: Dictionary = {"basic": 0}
-var elements_defence: Dictionary = {"basic": 15}
+var physical_defence: Dictionary = {"basic": 10}
+var elements_defence: Dictionary = {"basic": 50}
 var grass_defence: Dictionary = {"basic": 0}
 var fire_defence: Dictionary = {"basic": 0}
-var water_defence: Dictionary = {"basic": 10}
+var water_defence: Dictionary = {"basic": 0}
 var poison_defence: Dictionary = {"basic": 0}
 var electric_defence: Dictionary = {"basic": 0}
 var defences: Array[Dictionary] = [physical_defence, elements_defence, grass_defence, fire_defence, water_defence, poison_defence, electric_defence]

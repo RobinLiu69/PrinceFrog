@@ -90,11 +90,11 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 		var electric_defence: int = defences[6]
 		print(victim.defences)
 		total_damage_amount += physical_damage * (1 - (physical_defence/(physical_defence + 100)))
-		total_damage_amount += max(0, grass_damage * (1 - elements_defence/100.0) - grass_defence)
-		total_damage_amount += max(0, fire_damage * (1 - elements_defence/100.0) - fire_defence)
-		total_damage_amount += max(0, water_damage * (1 - elements_defence/100.0) - water_defence)
-		total_damage_amount += max(0, poison_damage * (1 - elements_defence/100.0) -poison_defence)
-		total_damage_amount += max(0, electric_damage * (1 - elements_defence/100.0) - electric_defence)
+		total_damage_amount += max(0, element_calculate(grass_damage, elements_defence) - grass_defence)
+		total_damage_amount += max(0, element_calculate(fire_damage, elements_defence) - fire_defence)
+		total_damage_amount += max(0, element_calculate(water_damage, elements_defence) - water_defence)
+		total_damage_amount += max(0, element_calculate(poison_damage, elements_defence) -poison_defence)
+		total_damage_amount += max(0, element_calculate(electric_damage, elements_defence) - electric_defence)
 		
 		var element_type: String = "null"
 		
@@ -114,3 +114,7 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 		ParticleFunc.display_number(damage_taken, victim.damage_numbers_origin.global_position, element_type)
 		return true
 	return false
+
+
+func element_calculate(damage: int, element_defence: int) -> float:
+	return damage * (damage / (damage + element_defence / 1.0))

@@ -36,7 +36,7 @@ func effect_display_update(body: CharacterBody2D) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func stun(body: CharacterBody2D, duration: float = 0) -> bool:
-	if "stun_timer" not in body:
+	if not body.has_node("StunTimer"):
 		var stun_timer = Timer.new()
 		stun_timer.name = "StunTimer"
 		#stun_timer.connect(stun_end)
@@ -49,7 +49,6 @@ func stun(body: CharacterBody2D, duration: float = 0) -> bool:
 			return true
 		else:
 			return false
-
 
 func slowness_update(body: CharacterBody2D) -> void:
 	for slowness_level in body.slowness_record.values():

@@ -161,11 +161,11 @@ func spawn_projectile(source: CharacterBody2D, set_position: Vector2 = Vector2()
 	var targets: Array[Node] = [null]
 	match attack_type:
 		"nearest":
-			targets = [AttackFunc.find_the_nearest_target(owner, target_list)]
+			targets = AttackFunc.find_the_nearest_targets(owner, target_list)
 		"farthest":
-			targets = [AttackFunc.find_the_farthest_target(owner, target_list)]
+			targets = [AttackFunc.find_the_farthest_targets(owner, target_list)]
 		"random":
-			targets = [AttackFunc.find_random_target(target_list)]
+			targets = [AttackFunc.find_random_targets(target_list)]
 		"all":
 			targets = target_list
 	instance.source = source

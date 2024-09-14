@@ -12,16 +12,20 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func find_the_nearest_target(body: CharacterBody2D, target_list: Array[Node]) -> CharacterBody2D:
-	var nearest_target: CharacterBody2D = null
-	var distance: float = INF
-	
+
+func find_the_nearest_targets(body: CharacterBody2D, target_list: Array[Node], max_amount: int = 1) -> Array[Node]:
+	var valid_targets = []
 	for target in target_list:
-		if body.global_position.distance_squared_to(target.global_position) < distance:
-			nearest_target = target
-			distance = body.global_position.distance_squared_to(target.global_position)
-	
-	return nearest_target if is_instance_valid(nearest_target) else null
+		if is_instance_valid(target):
+			var distance = body.global_position.distance_squared_to(target.global_position)
+			valid_targets.append([distance, target])
+	valid_targets.sort()
+
+	var nearest_targets: Array[Node] = []
+	for i in range(min(max_amount, valid_targets.size())):
+		nearest_targets.append(valid_targets[i][1])
+
+	return nearest_targets
 
 func find_the_farthest_target(body: CharacterBody2D, target_list: Array[Node]) -> CharacterBody2D:
 	var farthest_target: CharacterBody2D = target_list.pick_random()

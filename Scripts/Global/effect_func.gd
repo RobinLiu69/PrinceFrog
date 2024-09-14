@@ -143,9 +143,16 @@ func apply_element_effect_on_attack(attacker: CharacterBody2D, victim: Character
 		victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 		add_poison_timer(attacker, victim)
 	if "electric" in current_element_names:
-		pass
-	
-	
+		normal_electric(attacker, victim)
+		
+
+		
+func normal_electric	(attacker: CharacterBody2D, victim: CharacterBody2D):
+		var target_list: Array[Node] = AttackFunc.get_target_list(attacker, "not in my group")
+		var targets = AttackFunc.find_the_nearest_targets(victim,target_list,victim.current_elements["electric"])
+		targets = targets.slice(1, targets.size())
+		for target in targets:
+			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, 0, "electric")	
 	
 
 func switch_element(attacker: CharacterBody2D, victim: CharacterBody2D, applied_element: String) -> void:
@@ -243,8 +250,8 @@ func _on_element_timer_timeout(victim: CharacterBody2D, timer: Timer) -> void:
 						victim.slowness_record["_water"] = 100 - 10 * victim.current_elements["water"]
 				"poison":
 					if victim.current_elements[element_name] <= 0:
-						victim.physical_defence.erase("_poison")
-						victim.elements_defence.erase("_poison")
+						victim.ence.erase("_poison")
+						victim.elements_defphysical_defence.erase("_poison")
 					else:
 						victim.physical_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 						victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
@@ -343,6 +350,11 @@ func trigger_poison_breakthrough(attacker: CharacterBody2D, victim: CharacterBod
 ## ALERT: haven't finished
 func trigger_electric_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), "_electric")
+	var target_list: Array[Node] = AttackFunc.get_target_list(attacker, "not in my group")
+	var targets = AttackFunc.find_the_nearest_targets(victim,target_list,5)
+	targets = targets.slice(1, targets.size())
+	for target in targets:
+		AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, target.max_health * 0.0025 * get_damage_multiplier(target.enemy_type), "electric")	
 	add_breakthrough_timer(victim, "Electric")
 
 func add_breakthrough_timer(body:CharacterBody2D, name:String) -> void:

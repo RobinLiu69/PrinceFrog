@@ -16,14 +16,14 @@ func _ready():
 
 func hit(body: CharacterBody2D) -> void:
 	if body not in in_slow_targets:
-		in_slow_targets[body] = EffectFuncs.slowness(body, slowness_level, 10000)
+		in_slow_targets[body] = EffectFunc.slowness(body, slowness_level, 10000)
 	else:
 		in_slow_targets[body].stop()
 		in_slow_targets[body].set_wait_time(0.001)
 		in_slow_targets[body].start()
 	
 func _on_poop_area_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body != source:
+	if body != source and body in targets:
 		hit(body)
 
 

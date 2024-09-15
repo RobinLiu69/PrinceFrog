@@ -15,8 +15,9 @@ var current_elements: Dictionary = {}
 var slowness_record: Dictionary = {}
 var healing_efficiency: Dictionary = {"basic": 100}
 
+var damage: int = 0
 var physical_defence: int = 0
-var elements_defence: int = 0
+var elements_resistance: int = 0
 var grass_defence: int = 0
 var fire_defence: int = 0
 var water_defence: int = 0

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxy3yopp84b7k"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Grids/control_grid.gd" id="1_3476x"]
+[ext_resource type="PackedScene" uid="uid://hfnn8bj0hc6t" path="res://Scenes/UI/Grids/blank_grid.tscn" id="1_fnn1q"]
+[ext_resource type="PackedScene" uid="uid://b75im3b5j2hn8" path="res://Scenes/UI/Grids/active_grid.tscn" id="2_ldfqi"]
+
+[node name="TongueBlock" type="Node2D"]
+script = ExtResource("1_3476x")
+
+[node name="BlankGrid" parent="." instance=ExtResource("1_fnn1q")]
+
+[node name="ActiveGrid" parent="." instance=ExtResource("2_ldfqi")]
+grid_position = Vector2(1, 0)

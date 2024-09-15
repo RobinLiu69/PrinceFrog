@@ -3,7 +3,8 @@ extends CharacterBody2D
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var exisiting_timer: Timer = $ExisitingTimer
 
-var basic_damage: int
+var base_damage: int
+var physical_damage: int
 var speed: float
 var existing_time: float
 var stun_time: float
@@ -40,9 +41,9 @@ func _on_exisiting_timer_timeout() -> void:
 	queue_free()
 
 func _on_kunai_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body in targets:
-		var total_damage = basic_damage
-		body.handle_hit(source, total_damage)
+	if body != source and body in targets:
+		var total_damage = base_damage + physical_damage
+		AttackFunc.damage(source, body, total_damage)
 		hit(body)
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:

@@ -4,7 +4,8 @@ extends CharacterBody2D
 @onready var timer: Timer = $Timer
 @onready var tongue_mid: Line2D = $TongueMid
 
-var basic_damage: int
+var base_damage: int
+var physical_damage: int
 var speed: int
 var radius: float
 var existing_time: float
@@ -65,16 +66,11 @@ func hit(body: CharacterBody2D = null) -> void:
 	#return false	
 	
 func _on_tongue_hit_body_entered(body: Node2D) -> void:
-	if body != source and not target_hit: #body.has_method("handle_hit") and 
-		var total_damage = basic_damage
+	if body != source and not target_hit:
+		var total_damage = base_damage + physical_damage
 		source.anim.play("open_mouth")
-		#EffectFunc.stun(body, 10)
 		#body.handle_hit(source, total_damage)
-		#AttackFunc.damage(source, body, 0, 0, 0, 0, 0, 0, "grass", 1)
-		AttackFunc.damage(source, body, 0, 0, 0, 0, 0, 0, "fire", 1)
-		#AttackFunc.damage(source, body, 0, 0, 0, 0, 0, 0, "water", 3)
-		#AttackFunc.damage(source, body, 5, 0, 0, 0, 0, 0, "poison", 5)
-		AttackFunc.damage(source, body, 0, 0, 0, 0, 0, 0, "electric", 5)
+		AttackFunc.damage(source, body, total_damage, 0, 0, 0, 0, 0, "water", 2)
 		hit(body)
 	elif target_hit and body == source:
 		source.anim.play("RESET")

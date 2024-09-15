@@ -12,6 +12,6 @@ auto_spawn = true
 existing_time = 0.7
 target_type = "aggressive"
 attack_type = "nearest"
-physical_damage = 0.4
+physical_damage = 40
 facing_the_target_rotation = true
 radius = 3.0

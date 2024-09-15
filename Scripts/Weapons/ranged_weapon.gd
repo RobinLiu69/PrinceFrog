@@ -17,15 +17,15 @@ extends Marker2D
 @export_enum("aggressive", "friendly", "neutral", "all", "not in my group") var target_type: String
 @export_enum("nearest", "farthest", "random", "all") var attack_type: String
 ## If enter a negative number , it will become heal.
-@export var basic_damage: int
-## Attacks deal a percentage of the owner's physical damage.
-@export_range(0, 1, 0.01) var physical_damage: float = 0
+@export var base_damage: int
+## Attacks deal a percentage of the source's physical damage.
+@export_range(0, 100, 1) var physical_damage: int = 0
 @export_group("Advance Setting")
-## This will make the projectiles spawn at the root scene, this means it will not move with the owner.
+## This will make the projectiles spawn at the root scene, this means it will not move with the source.
 @export var spawn_at_root_scene: bool = false
 ## This will make the projectiles facing the target by turning marker rotation and copy it to the projectile rotaion. If there are multiple targets , will facing the closest target.
 @export var facing_the_target_rotation: bool = false
-@export_enum("owner", "marker") var defult_position: String = "marker"
+@export_enum("source", "marker") var defult_position: String = "marker"
 
 
 @export_category("Trigger") 
@@ -39,11 +39,11 @@ extends Marker2D
 
 
 @export_category("Special")
-## This is a universal radius, meaning that different projectiles have their own radius meanings. All radii are based on owner size.
+## This is a universal radius, meaning that different projectiles have their own radius meanings. All radii are based on source size.
 @export var radius: float
 @export_group("Area", "area")
 @export var area_active: bool = false
-## Area radius is based on the owner size. etc 150% (1.5), 50% (0.5) of thw owner size.
+## Area radius is based on the source size. etc 150% (1.5), 50% (0.5) of thw source size.
 @export var area_radius: float
 @export_group("Multiple Projectiles")
 @export var multiple_projectiles_active: bool = false
@@ -57,7 +57,7 @@ extends Marker2D
 @export var obj_start_count: int
 ##  If "obj max count smaller" than "obj start count", will trigger an error.
 @export var obj_max_count: int
-## Rvolution radius is based on the owner size. etc 150% (1.5), 50% (0.5) of thw owner size.
+## Rvolution radius is based on the source size. etc 150% (1.5), 50% (0.5) of thw source size.
 @export var revolution_radius: float
 @export var rotation_speed: float
 
@@ -82,13 +82,13 @@ var in_cooldown: bool = false
 var hit_count: int = 0
 var shooting_angle: float = 0.0
 
-
 func _ready() -> void:
 	assert(projectile_scene, " Not a valid projectile scene")
 	var test_projectile: CharacterBody2D = projectile_scene.instantiate()
 	assert("source" in test_projectile, test_projectile.name+" don't have the required variable <source>")
 	assert("maker" in test_projectile, test_projectile.name+" don't have the required variable <maker>")
-	assert("basic_damage" in test_projectile, test_projectile.name+" don't have the required variable <basic_damage>")
+	assert("physical_damage" in test_projectile, test_projectile.name+" don't have the required variable <physical_damage>")
+	assert("base_damage" in test_projectile, test_projectile.name+" don't have the required variable <base_damage>")
 	assert("speed" in test_projectile, test_projectile.name+" don't have the required variable <speed>")
 	assert("targets" in test_projectile, test_projectile.name+" don't have the required variable <targets>")
 	assert("existing_time" in test_projectile, test_projectile.name+" don't have the required variable <existing_time>")
@@ -112,6 +112,7 @@ func _ready() -> void:
 
 	
 func attack(source: CharacterBody2D, damage_info: Array = [0]) -> float:
+	owner = source
 	if not in_cooldown and projectile_scene and auto_spawn:
 		in_cooldown = true
 		if cooldown > 0:
@@ -157,19 +158,20 @@ func add_projectile() -> void:
 
 func spawn_projectile(source: CharacterBody2D, set_position: Vector2 = Vector2()) -> CharacterBody2D:
 	var instance: CharacterBody2D = projectile_scene.instantiate()
-	var target_list: Array[Node] = AttackFunc.get_target_list(owner, target_type)
+	var target_list: Array[Node] = AttackFunc.get_target_list(source, target_type)
 	var targets: Array[Node] = [null]
 	match attack_type:
 		"nearest":
-			targets = AttackFunc.find_the_nearest_targets(owner, target_list)
+			targets = AttackFunc.find_the_nearest_targets(source, target_list)
 		"farthest":
-			targets = [AttackFunc.find_the_farthest_targets(owner, target_list)]
+			targets = [AttackFunc.find_the_farthest_targets(source, target_list)]
 		"random":
 			targets = [AttackFunc.find_random_targets(target_list)]
 		"all":
 			targets = target_list
 	instance.source = source
-	instance.basic_damage = basic_damage
+	instance.base_damage = base_damage
+	instance.physical_damage = source.damage * physical_damage/100
 	instance.speed = speed
 	instance.targets = targets
 	instance.existing_time = existing_time
@@ -185,7 +187,7 @@ func spawn_projectile(source: CharacterBody2D, set_position: Vector2 = Vector2()
 			look_at(targets[0].global_position)
 			instance.rotation = rotation
 		else:
-			look_at(AttackFunc.find_the_nearest_target(owner, target_list).global_position)
+			look_at(AttackFunc.find_the_nearest_targets(source, target_list)[0].global_position)
 			instance.rotation = rotation
 	if area_active:
 		instance.area_radius = area_radius
@@ -200,7 +202,7 @@ func spawn_projectile(source: CharacterBody2D, set_position: Vector2 = Vector2()
 	if defult_position == "marker" and set_position == Vector2.ZERO:
 		instance.global_position = global_position
 	elif defult_position == "onwer" and set_position == Vector2.ZERO:
-		instance.global_position = owner.global_position
+		instance.global_position = source.global_position
 	elif set_position != Vector2.ZERO:
 		instance.global_position = set_position
 	obj_count += 1

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bry40bjk45dd0" path="res://Scenes/Player/frog.tscn" id="1_6r5en"]
 [ext_resource type="PackedScene" uid="uid://ceo8lbrpyhh8n" path="res://Scenes/Enemy/mouse.tscn" id="2_weea0"]
-[ext_resource type="PackedScene" uid="uid://jah55jslxkyi" path="res://Scenes/GUI/canvas_layer.tscn" id="3_r0f0m"]
+[ext_resource type="PackedScene" uid="uid://jah55jslxkyi" path="res://Scenes/UI/canvas_layer.tscn" id="3_r0f0m"]
 
 [node name="root" type="Node2D"]
 

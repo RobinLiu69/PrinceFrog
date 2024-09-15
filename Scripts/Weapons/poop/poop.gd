@@ -3,7 +3,8 @@ extends CharacterBody2D
 @onready var timer: Timer = $Timer
 @onready var poop_area_scene: PackedScene = preload("res://Scenes/Weapons/poop/poop_area.tscn")
 
-var basic_damage: int
+var base_damage: int
+var physical_damage: int
 var speed: float
 var slowness_time: float 
 var slowness_level: float
@@ -34,7 +35,7 @@ func hit(body: CharacterBody2D) -> void:
 
 	
 func _on_poop_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body != source:
+	if body != source and body in targets:
 		hit(body)
 
 func _on_timer_timeout() -> void:

@@ -4,7 +4,8 @@ extends CharacterBody2D
 
 @onready var timer: Timer = $Timer 
 var source: CharacterBody2D = null
-var basic_damage: int
+var base_damage: int
+var physical_damage: int
 var speed: float
 var existing_time: float = -1
 var maker: Marker2D = null
@@ -23,7 +24,7 @@ func hit(body: CharacterBody2D) -> void:
 
 
 func _on_leaf_hit_body_entered(body: Node2D) -> void:
-	if body.has_method("handle_hit") and body != source:
-		var total_damage = basic_damage
-		body.handle_hit(source, total_damage)
+	if body != source and body in targets:
+		var total_damage = (base_damage * maker.obj_count) + physical_damage
+		AttackFunc.damage(source, body, total_damage)
 		hit(body)

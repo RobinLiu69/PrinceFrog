@@ -1,6 +1,6 @@
 extends Node
 
-const BASIC_ARRAY: Array[String] = ["physical_defence", "elements_defence", "grass_defence"\
+const BASIC_ARRAY: Array[String] = ["physical_defence", "elements_resistance", "grass_defence"\
 , "fire_defence", "water_defence", "poison_defence", "electric_defence"]
 
 const GROUP_NAMES: Array[String] = ["aggressive", "friendly", "neutral"]
@@ -83,7 +83,7 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 				else: values *= defence[key]/100.0
 			defences.append(floor(values))
 		var physical_defence: int = defences[0]
-		var elements_defence: int = defences[1]
+		var elements_resistance: int = defences[1]
 		var grass_defence: int = defences[2]
 		var fire_defence: int = defences[3]
 		var water_defence: int = defences[4]
@@ -92,11 +92,11 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 		
 		
 		total_damage_amount += physical_damage * (1 - (physical_defence/(physical_defence + 100)))
-		total_damage_amount += max(0, element_calculate(grass_damage, elements_defence) - grass_defence)
-		total_damage_amount += max(0, element_calculate(fire_damage, elements_defence) - fire_defence)
-		total_damage_amount += max(0, element_calculate(water_damage, elements_defence) - water_defence)
-		total_damage_amount += max(0, element_calculate(poison_damage, elements_defence) -poison_defence)
-		total_damage_amount += max(0, element_calculate(electric_damage, elements_defence) - electric_defence)
+		total_damage_amount += max(0, element_calculate(grass_damage, elements_resistance) - grass_defence)
+		total_damage_amount += max(0, element_calculate(fire_damage, elements_resistance) - fire_defence)
+		total_damage_amount += max(0, element_calculate(water_damage, elements_resistance) - water_defence)
+		total_damage_amount += max(0, element_calculate(poison_damage, elements_resistance) -poison_defence)
+		total_damage_amount += max(0, element_calculate(electric_damage, elements_resistance) - electric_defence)
 		
 		var element_type: String = "null"
 		
@@ -119,4 +119,4 @@ func damage(attacker: CharacterBody2D, victim: CharacterBody2D, physical_damage:
 
 
 func element_calculate(damage: int, element_defence: int) -> float:
-	return damage * (1 - (element_defence / (250.0 + element_defence)))
+	return damage * (1 - (element_defence / (100.0 + element_defence)))

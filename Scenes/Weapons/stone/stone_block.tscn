@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://0dbxf8fu3a04"]
+
+[ext_resource type="PackedScene" uid="uid://sf8ugtjcler8" path="res://Scenes/UI/Grids/passive_grid.tscn" id="1_5v8no"]
+[ext_resource type="Script" path="res://Scripts/UI/Grids/control_grid.gd" id="1_7nrpy"]
+[ext_resource type="PackedScene" uid="uid://ecpvrbqsr47b" path="res://Scenes/UI/Grids/value_storage_grid.tscn" id="2_7ibun"]
+[ext_resource type="PackedScene" uid="uid://cljbyk56xv8xs" path="res://Scenes/Weapons/stone/waepon_stone.tscn" id="3_icngo"]
+
+[node name="StoneBlock" type="Node2D"]
+script = ExtResource("1_7nrpy")
+
+[node name="PassiveGrid" parent="." instance=ExtResource("1_5v8no")]
+grid_position = Vector2(0, 1)
+weapon_scene = ExtResource("3_icngo")
+
+[node name="ValueStorageGrid" parent="." instance=ExtResource("2_7ibun")]

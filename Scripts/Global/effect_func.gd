@@ -160,7 +160,7 @@ func apply_element_effect_on_attack(attacker: CharacterBody2D, victim: Character
 		victim.slowness_record["_water"] = 100 - 10 * victim.current_elements["water"]
 	if "poison" in current_element_names:
 		victim.physical_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
-		victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
+		victim.elements_resistance["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 		add_poison_timer(attacker, victim)
 	if "electric" in current_element_names:
 		if applied_element == "_electric": pass
@@ -270,11 +270,11 @@ func _on_element_timer_timeout(victim: CharacterBody2D, timer: Timer) -> void:
 						victim.slowness_record["_water"] = 100 - 10 * victim.current_elements["water"]
 				"poison":
 					if victim.current_elements[element_name] <= 0:
-						victim.elements_defence.erase("_poison")
+						victim.elements_resistance.erase("_poison")
 						victim.physical_defence.erase("_poison")
 					else:
 						victim.physical_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
-						victim.elements_defence["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
+						victim.elements_resistance["_poison"] = 100 - 2 * victim.current_elements["poison"] * get_damage_multiplier(victim.enemy_type)
 			if victim.current_elements[element_name] <= 0:
 				victim.current_elements.erase(element_name)
 		timer.set_wait_time(1)
@@ -341,14 +341,14 @@ func add_poison_breakthrough_timer(attacker: CharacterBody2D, victim: CharacterB
 		victim.add_child(poison_timer)
 		poison_timer.stop()
 		victim.physical_defence["_poison_breakthrough"] = 100 - 10 * get_damage_multiplier(victim.enemy_type)
-		victim.elements_defence["_poison_breakthrough"] = 100 - 10 * get_damage_multiplier(victim.enemy_type)
+		victim.elements_resistance["_poison_breakthrough"] = 100 - 10 * get_damage_multiplier(victim.enemy_type)
 		poison_timer.set_wait_time(0.75 * get_damage_multiplier(victim.enemy_type))
 		poison_timer.timeout.connect(_on_poison_breakthrough_timer_timeout.bind(attacker, victim, poison_timer))
 		poison_timer.start()
 	
 func _on_poison_breakthrough_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D, timer: Timer) -> void:
 	victim.physical_defence.erase("_poison_breakthrough")
-	victim.elements_defence.erase("_poison_breakthrough")
+	victim.elements_resistance.erase("_poison_breakthrough")
 	timer.queue_free()
 
 
@@ -357,12 +357,10 @@ func trigger_grass_breakthrough(attacker: CharacterBody2D, victim: CharacterBody
 	AttackFunc.damage(attacker, victim, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, 0, 0, "_grass")
 	add_breakthrough_timer(victim, "Grass")
 
-## ALERT: haven't finished
 func trigger_fire_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, 0, "_fire")
 	add_breakthrough_timer(victim, "Fire")
 
-## ALERT: haven't finished
 func trigger_water_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, "_water")
 	add_breakthrough_timer(victim, "Water")
@@ -373,7 +371,6 @@ func trigger_poison_breakthrough(attacker: CharacterBody2D, victim: CharacterBod
 	add_breakthrough_timer(victim, "Poison")
 	add_poison_breakthrough_timer(attacker, victim)
 
-## ALERT: haven't finished
 func trigger_electric_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), "_electric")
 	var target_list: Array[Node] = AttackFunc.get_target_list(attacker, "not in my group")
@@ -382,8 +379,7 @@ func trigger_electric_breakthrough(attacker: CharacterBody2D, victim: CharacterB
 	for target in AttackFunc.find_the_nearest_targets(victim, target_list, 5):
 		if len(victim.current_elements) > 1:
 			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, target.max_health * 0.0025 * get_damage_multiplier(target.enemy_type) , victim.current_elements.keys()[0], 1)
-			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, 0 , victim.current_elements.keys()[1], 1)
-			
+			switch_element(attacker, target, victim.current_elements.keys()[1])
 		else:
 			AttackFunc.damage(attacker, target, 0, 0, 0, 0, 0, target.max_health * 0.0025 * get_damage_multiplier(target.enemy_type) , "electric", 1)
 

@@ -13,7 +13,7 @@ extends CharacterBody2D
 @export_enum("aggressive", "friendly", "neutral", "all", "not in my group") var target_type: String
 @export_enum("nearest", "farthest", "random", "all") var attack_type: String
 ## If enter a nagative number is will bercome heal.
-@export var basic_damage: int
+@export var base_damage: int
 ## Attacks deal a percentage of the owner's physical damage.
 @export_range(0, 1, 0.01) var physical_damage: float = 0
 @export_group("Advance Setting")
@@ -145,7 +145,7 @@ func spawn_projectile(source: CharacterBody2D, set_position: Vector2 = Vector2()
 		"all":
 			targets = target_list
 	instance.source = source
-	instance.basic_damage = basic_damage
+	instance.base_damage = base_damage
 	instance.speed = speed
 	instance.targets = targets
 	instance.existing_time = existing_time

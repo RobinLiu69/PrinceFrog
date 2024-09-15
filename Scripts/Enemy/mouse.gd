@@ -15,7 +15,7 @@ signal health_changed
 @onready var player_chase: bool = false
 @onready var damage_numbers_origin: Node2D = $DamageNumbersOrigin
 var player: CharacterBody2D = null
-
+var died: bool = false
 
 var enemy_type: String = "minion" # minion/boss/elite/frog
 var current_elements: Dictionary = {}
@@ -24,13 +24,13 @@ var healing_efficiency: Dictionary = {"basic": 100}
 
 
 var physical_defence: Dictionary = {"basic": 40}
-var elements_defence: Dictionary = {"basic": 0}
+var elements_resistance: Dictionary = {"basic": 0}
 var grass_defence: Dictionary = {"basic": 0}
 var fire_defence: Dictionary = {"basic": 0}
 var water_defence: Dictionary = {"basic": 0}
 var poison_defence: Dictionary = {"basic": 0}
 var electric_defence: Dictionary = {"basic": 0}
-var defences: Array[Dictionary] = [physical_defence, elements_defence, grass_defence, fire_defence, water_defence, poison_defence, electric_defence]
+var defences: Array[Dictionary] = [physical_defence, elements_resistance, grass_defence, fire_defence, water_defence, poison_defence, electric_defence]
 
 func _ready():
 	health_changed.emit()
@@ -67,8 +67,9 @@ func take_damage(attacker: CharacterBody2D, value: int) -> float:
 	value = current_health if current_health - value <= 0 else value
 	current_health -= value
 	health_changed.emit()
-	if not alive() and self:
+	if not alive() and not died:
 		queue_free()
+		died = true
 		print(sprite.name +" dead")
 	return value
 

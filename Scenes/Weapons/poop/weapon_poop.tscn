@@ -13,4 +13,3 @@ target_type = "aggressive"
 attack_type = "all"
 spawn_at_root_scene = true
 slowness_active = true
-slowness_level = 0.7

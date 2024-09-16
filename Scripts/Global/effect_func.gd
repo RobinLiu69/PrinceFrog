@@ -1,5 +1,8 @@
 extends Node
 
+
+
+
 const SLOWNESS_ICON = preload("res://Images/Effects/slowness.png")
 const GRASS_ICON = preload("res://Images/Effects/elements/grass.png")
 const FIRE_ICON = preload("res://Images/Effects/elements/fire.png")
@@ -8,6 +11,8 @@ const POISON_ICON = preload("res://Images/Effects/elements/poison.png")
 const ELECTRIC_ICON = preload("res://Images/Effects/elements/electric.png")
 
 const ELEMENTS: Array[String] = ["grass", "fire", "water", "poison", "electric"]
+
+var fire_area_scene: PackedScene = preload("res://Scenes/element/fire_area.tscn")
 
 func get_damage_multiplier(enemy_type: String) -> int:
 	match enemy_type:
@@ -357,9 +362,18 @@ func trigger_grass_breakthrough(attacker: CharacterBody2D, victim: CharacterBody
 	AttackFunc.damage(attacker, victim, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, 0, 0, "_grass")
 	add_breakthrough_timer(victim, "Grass")
 
+
 func trigger_fire_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, 0, "_fire")
+	spawn_fire_area(attacker, victim)
 	add_breakthrough_timer(victim, "Fire")
+
+func spawn_fire_area(attacker: CharacterBody2D, victim: CharacterBody2D): 
+		var fire_area_instance = fire_area_scene.instantiate()  
+		fire_area_instance.global_position = victim.global_position  
+		get_tree().current_scene.add_child(fire_area_instance)  
+		fire_area_instance.attacker = attacker 
+		return fire_area_instance 
 
 func trigger_water_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, "_water")

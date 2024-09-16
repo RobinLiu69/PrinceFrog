@@ -70,7 +70,7 @@ func _on_tongue_hit_body_entered(body: Node2D) -> void:
 		var total_damage = base_damage + physical_damage
 		source.anim.play("open_mouth")
 		#body.handle_hit(source, total_damage)
-		AttackFunc.damage(source, body, total_damage, 0, 0, 0, 0, 0, "water", 2)
+		AttackFunc.damage(source, body, total_damage, 0, 0, 0, 0, 0, "fire", 2)
 		hit(body)
 	elif target_hit and body == source:
 		source.anim.play("RESET")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bry40bjk45dd0"]
+[gd_scene load_steps=13 format=3 uid="uid://bry40bjk45dd0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/frog.gd" id="1_lxvj1"]
 [ext_resource type="Texture2D" uid="uid://daevipk0xvroi" path="res://Images/Frog/frog.png" id="2_31yrl"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c2s4ovnu34fmh" path="res://Images/Frog/frog_open_mouth_2.png" id="4_q0pub"]
 [ext_resource type="Script" path="res://Scripts/Player/inventory_maneger.gd" id="5_y3a2o"]
 [ext_resource type="PackedScene" uid="uid://0dbxf8fu3a04" path="res://Scenes/Weapons/stone/stone_block.tscn" id="6_wgbai"]
+[ext_resource type="PackedScene" uid="uid://cwlo7cjjo4pla" path="res://Scenes/Weapons/tongue/waepon_tongue.tscn" id="7_5evvr"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e8uv4"]
 animations = [{
@@ -108,6 +109,8 @@ z_index = 5
 scale = Vector2(4, 4)
 script = ExtResource("5_y3a2o")
 item_scene = ExtResource("6_wgbai")
+
+[node name="TongueMaker" parent="Weapons" instance=ExtResource("7_5evvr")]
 
 [node name="CharacterCollision" type="CollisionShape2D" parent="."]
 z_index = 10

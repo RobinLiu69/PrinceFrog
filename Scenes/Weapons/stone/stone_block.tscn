@@ -1,15 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://0dbxf8fu3a04"]
+[gd_scene load_steps=4 format=3 uid="uid://0dbxf8fu3a04"]
 
-[ext_resource type="PackedScene" uid="uid://sf8ugtjcler8" path="res://Scenes/UI/Grids/passive_grid.tscn" id="1_5v8no"]
 [ext_resource type="Script" path="res://Scripts/UI/Grids/control_grid.gd" id="1_7nrpy"]
-[ext_resource type="PackedScene" uid="uid://ecpvrbqsr47b" path="res://Scenes/UI/Grids/value_storage_grid.tscn" id="2_7ibun"]
+[ext_resource type="PackedScene" uid="uid://b75im3b5j2hn8" path="res://Scenes/UI/Grids/general_grid.tscn" id="2_vxutn"]
 [ext_resource type="PackedScene" uid="uid://cljbyk56xv8xs" path="res://Scenes/Weapons/stone/waepon_stone.tscn" id="3_icngo"]
 
 [node name="StoneBlock" type="Node2D"]
 script = ExtResource("1_7nrpy")
 
-[node name="PassiveGrid" parent="." instance=ExtResource("1_5v8no")]
-grid_position = Vector2(0, 1)
+[node name="Grid" parent="." instance=ExtResource("2_vxutn")]
+grid_type = "passive"
 weapon_scene = ExtResource("3_icngo")
 
-[node name="ValueStorageGrid" parent="." instance=ExtResource("2_7ibun")]
+[node name="Grid2" parent="." instance=ExtResource("2_vxutn")]
+grid_type = "value storage"
+grid_position = Vector2(0, 1)
+move_speed_percent_bonus = 10
+base_damage_bonus = 20

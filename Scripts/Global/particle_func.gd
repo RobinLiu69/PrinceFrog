@@ -33,21 +33,21 @@ func display_number(value: int, position: Vector2, element_type: String = "null"
 	number.text = str(value)
 	number.label_settings = LabelSettings.new()
 	
-	var color: Color = "#FFFFFF"
+	var color: Color = "#FFA042"
 	match element_type:
 		"grass":
 			color = "#4FBF40"
 		"fire":
-			color = "#FF7700"
+			color = "#CC471F"
 		"water":
 			color = "#00B2FF"
 		"poison":
-			color = "#BB00FF"
+			color = "#995AAD"
 		"electric":
 			color = "#FBFF00"
 		_:
 			if is_critical:
-				color = "#FF0000"
+				color = "#8C1B20"
 			if value == 0:
 				color = "#808080"
 	

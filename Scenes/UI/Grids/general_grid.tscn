@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://b75im3b5j2hn8"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Grids/active_grid.gd" id="1_74jr0"]
+[ext_resource type="Script" path="res://Scripts/UI/Grids/general_grid.gd" id="1_74jr0"]
 
-[node name="ActiveGrid" type="Node2D"]
+[node name="Grid" type="Node2D"]
 script = ExtResource("1_74jr0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

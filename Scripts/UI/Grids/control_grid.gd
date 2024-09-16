@@ -25,13 +25,11 @@ var electric_defence_bonus: int = 0
 
 
 func _ready() -> void:
-	print(grids)
 	for grid in grids:
 		match grid.grid_type:
 			"active":
 				weapons_list.append(["active", grid.weapon])
 			"passive":
-				print(grid.weapon)
 				weapons_list.append(["passive", grid.weapon])
 			"value storage":
 				max_health_bonus += grid.max_health_bonus

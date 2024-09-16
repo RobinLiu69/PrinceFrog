@@ -5,7 +5,7 @@ signal health_changed
 @export var speed: int = 100.0
 @export var size: float = 100.0
 @export var max_health: int = 100
-@onready var weapons: Array[Node] = ($Weapons).get_children()
+@onready var inventory: Node2D = $Inventory
 @onready var player: AnimatedSprite2D = $Frog
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var current_health: int = max_health
@@ -77,10 +77,8 @@ func alive() -> bool:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("e"):
-		for weapon in weapons:
-			if weapon.has_method("attack"):
-				weapon.attack(self)
+	if event is InputEventKey and event.is_pressed():
+		inventory.pressed_key(event.as_text())
 
 
 func _physics_process(delta: float):

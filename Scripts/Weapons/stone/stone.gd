@@ -49,7 +49,7 @@ func stun():
 func _on_stone_body_entered(body: Node2D) -> void:
 	if body != source and body in targets:
 		var total_damage = base_damage + physical_damage
-		AttackFunc.damage(source, body, total_damage)
+		AttackFunc.damage(source, body, total_damage,0,0,0,0,0,"poison")
 		hit(body)
 
 

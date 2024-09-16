@@ -1,13 +1,16 @@
 [gd_scene load_steps=4 format=3 uid="uid://cxy3yopp84b7k"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Grids/control_grid.gd" id="1_3476x"]
-[ext_resource type="PackedScene" uid="uid://hfnn8bj0hc6t" path="res://Scenes/UI/Grids/blank_grid.tscn" id="1_fnn1q"]
-[ext_resource type="PackedScene" uid="uid://b75im3b5j2hn8" path="res://Scenes/UI/Grids/active_grid.tscn" id="2_ldfqi"]
+[ext_resource type="PackedScene" uid="uid://b75im3b5j2hn8" path="res://Scenes/UI/Grids/general_grid.tscn" id="2_ldfqi"]
+[ext_resource type="PackedScene" uid="uid://cwlo7cjjo4pla" path="res://Scenes/Weapons/tongue/waepon_tongue.tscn" id="4_kauhv"]
 
 [node name="TongueBlock" type="Node2D"]
 script = ExtResource("1_3476x")
 
-[node name="BlankGrid" parent="." instance=ExtResource("1_fnn1q")]
+[node name="Grid" parent="." instance=ExtResource("2_ldfqi")]
+grid_type = "blank"
 
-[node name="ActiveGrid" parent="." instance=ExtResource("2_ldfqi")]
+[node name="Grid2" parent="." instance=ExtResource("2_ldfqi")]
+grid_type = "active"
 grid_position = Vector2(1, 0)
+weapon_scene = ExtResource("4_kauhv")

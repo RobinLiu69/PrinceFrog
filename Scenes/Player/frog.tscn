@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://khk7dektdgek" path="res://Images/Frog/frog_open_mouth_1.png" id="3_mfa1o"]
 [ext_resource type="Texture2D" uid="uid://c2s4ovnu34fmh" path="res://Images/Frog/frog_open_mouth_2.png" id="4_q0pub"]
 [ext_resource type="Script" path="res://Scripts/Player/inventory_maneger.gd" id="5_y3a2o"]
-[ext_resource type="PackedScene" uid="uid://0dbxf8fu3a04" path="res://Scenes/Weapons/stone/stone_block.tscn" id="6_wgbai"]
+[ext_resource type="PackedScene" uid="uid://cxy3yopp84b7k" path="res://Scenes/Weapons/tongue/tongue_blocks.tscn" id="6_p7em6"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e8uv4"]
 animations = [{
@@ -103,11 +103,11 @@ z_as_relative = false
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_e8uv4")
 
-[node name="Weapons" type="Node2D" parent="."]
+[node name="Inventory" type="Node2D" parent="."]
 z_index = 5
 scale = Vector2(4, 4)
 script = ExtResource("5_y3a2o")
-item_scene = ExtResource("6_wgbai")
+item_scene = ExtResource("6_p7em6")
 
 [node name="CharacterCollision" type="CollisionShape2D" parent="."]
 z_index = 10

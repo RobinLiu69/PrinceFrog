@@ -28,7 +28,7 @@ func _on_poop_area_hit_body_entered(body: Node2D) -> void:
 
 
 func _on_poop_area_hit_body_exited(body: Node2D) -> void:
-	if body != source:
+	if body != source and body in targets:
 		hit(body)
 
 func _on_timer_timeout() -> void:

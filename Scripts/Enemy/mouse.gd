@@ -17,7 +17,7 @@ signal health_changed
 var player: CharacterBody2D = null
 var died: bool = false
 
-var enemy_type: String = "minion" # minion/boss/elite/frog
+var enemy_type: String = "boss" # minion/boss/elite/frog
 var current_elements: Dictionary = {}
 var slowness_record: Dictionary = {}
 var healing_efficiency: Dictionary = {"basic": 100}

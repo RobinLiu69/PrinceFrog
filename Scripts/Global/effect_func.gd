@@ -300,7 +300,7 @@ func water_reaction(attacker: CharacterBody2D, victim: CharacterBody2D, stack_le
 
 
 
-func add_fire_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
+func add_fire_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> Timer:
 	var fire_timer: Timer = null
 	if not victim.has_node("_FireTimer"):
 		fire_timer = Timer.new()
@@ -310,10 +310,12 @@ func add_fire_timer(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 		fire_timer.set_wait_time(1)
 		fire_timer.timeout.connect(_on_fire_timer_timeout.bind(attacker, victim, fire_timer))
 		fire_timer.start()
+	return fire_timer
+	
 	
 func _on_fire_timer_timeout(attacker: CharacterBody2D, victim: CharacterBody2D, timer: Timer) -> void:
 	if "fire" in victim.current_elements:
-		AttackFunc.damage(attacker, victim, 0, 0, victim.max_health * 0.001 * get_damage_multiplier(victim.enemy_type) * victim.current_elements["fire"], 0, 0, 0)
+			AttackFunc.damage(attacker, victim, 0, 0, victim.max_health * 0.001 * get_damage_multiplier(victim.enemy_type) * victim.current_elements["fire"], 0, 0, 0)
 	else:
 		timer.queue_free()
 
@@ -371,9 +373,10 @@ func trigger_fire_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2
 func spawn_fire_area(attacker: CharacterBody2D, victim: CharacterBody2D): 
 		var fire_area_instance = fire_area_scene.instantiate()  
 		fire_area_instance.global_position = victim.global_position  
+		fire_area_instance.source = attacker 
 		get_tree().current_scene.add_child(fire_area_instance)  
-		fire_area_instance.attacker = attacker 
 		return fire_area_instance 
+		
 
 func trigger_water_breakthrough(attacker: CharacterBody2D, victim: CharacterBody2D) -> void:
 	AttackFunc.damage(attacker, victim, 0, 0, 0, victim.max_health * 0.05 * get_damage_multiplier(victim.enemy_type), 0, 0, "_water")

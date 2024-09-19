@@ -4,6 +4,7 @@ var inventory: Array = []
 var item_list: Dictionary = {}
 @export var item_scene: PackedScene
 
+
 var keyboard: Array = [["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Minus", "Equal"],
 						["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "BracketLeft", "BracketRight", "BackSlash"],
 						["A", "S", "D", "F", "G", "H", "J", "K", "L", "Semicolon", "Apostrophe"],
@@ -21,9 +22,9 @@ func _ready() -> void:
 	print(inventory)
 	inventory_update()
 	
-	await get_tree().create_timer(5.0).timeout
-	print(unequip(4, 2))
-	inventory_update()
+	#await get_tree().create_timer(5.0).timeout
+	#print(unequip(4, 2))
+	#inventory_update()
 	
 	
 func init_inventory(row_counts: int, slots_in_rows: Array[int]) -> Array:
